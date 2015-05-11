@@ -1,3 +1,41 @@
 .description{
-	color:red;
+color: red;
+max-width: 460px;
+margin-top: 20px;
+font-family: "Times New Roman", Times, serif;
+font-size: 21px;
+color: #7C8B88;
+margin: 30px;
 }
+
+.screenshot{
+max-width: 45%;
+margin: 30px;
+}
+
+.image{
+max-width: 460px;
+
+}
+
+.app{
+display: flex;
+}
+
+.title{
+background-color: #33bebe;
+color: white;
+font-family: "Times New Roman", Times, serif;
+font-weight: 400;
+padding-top: 30px;
+padding-left: 20px;
+max-width: 890px;
+margin-left: 30px;
+}
+
+* {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+box-sizing: border-box;
+} 
