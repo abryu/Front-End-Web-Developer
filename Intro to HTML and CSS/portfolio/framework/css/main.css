@@ -9,6 +9,12 @@
     box-sizing: border-box;
 }
 
+@media only screen and (max-width: 500px){
+    .col-10{
+        display: none;
+    }
+}
+
 .grid {
     margin: 0 auto;
     max-width: 1200px;
