@@ -1,0 +1,30 @@
+.img-p {
+	margin-top: 20px;
+}
+
+.text-name {
+	margin-top: 50px;
+	font-family: 'Roboto', sans-serif;
+	color: black;
+	font-weight: 100;
+}
+
+.text-position {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+}
+
+hr {
+	border-width: 5px;
+	border-color: #A0A0A0;
+}
+
+.featuredWork {
+	font-family: 'Roboto', sans-serif;
+	color: #BCBBBB;
+	font-weight: 400;
+}
+
+.featuredWorkTitle {
+	color: #747704;
+}
