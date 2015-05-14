@@ -4,25 +4,20 @@
 
 .text-name {
 	margin-top: 50px;
-	font-family: 'Roboto', sans-serif;
-	color: black;
-	font-weight: 100;
+	font: 100 3em 'Roboto', sans-serif;
 }
 
 .text-position {
-	font-family: 'Roboto', sans-serif;
-	font-weight: 500;
+	font: 500 2em 'Roboto', sans-serif;
 }
 
 hr {
-	border-width: 5px;
-	border-color: #A0A0A0;
+	border: 2px solid #a0a0a0;
 }
 
-.featuredWork {
-	font-family: 'Roboto', sans-serif;
-	color: #BCBBBB;
-	font-weight: 400;
+.featuredWork {	
+	color: #bcbbbb;	
+	font: 400 2em 'Roboto', sans-serif;
 }
 
 .featuredWorkTitle {
