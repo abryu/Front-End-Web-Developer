@@ -15,8 +15,8 @@ hr {
 	border: 2px solid #a0a0a0;
 }
 
-.featuredWork {	
-	color: #bcbbbb;	
+.featuredWork {
+	color: #bcbbbb;
 	font: 400 2em 'Roboto', sans-serif;
 }
 
@@ -26,4 +26,8 @@ hr {
 
 h6 {
 	margin-bottom: 1px;
+}
+
+ul {
+	list-style-type: circle;
 }
