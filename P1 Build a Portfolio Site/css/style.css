@@ -1,18 +1,13 @@
-.img-p {
-	margin-top: 20px;
-}
-
-.text-name {
-	margin-top: 50px;
-	font: 100 3em 'Roboto', sans-serif;
-}
-
-.text-position {
-	font: 500 2em 'Roboto', sans-serif;
-}
-
 hr {
 	border: 2px solid #a0a0a0;
+}
+
+h6 {
+	margin-bottom: 1px;
+}
+
+ul {
+	list-style-type: circle;
 }
 
 .featuredWork {
@@ -24,10 +19,15 @@ hr {
 	color: #747704;
 }
 
-h6 {
-	margin-bottom: 1px;
+.img-p {
+	margin-top: 20px;
 }
 
-ul {
-	list-style-type: circle;
+.text-name {
+	margin-top: 50px;
+	font: 100 3em 'Roboto', sans-serif;
+}
+
+.text-position {
+	font: 500 2em 'Roboto', sans-serif;
 }
