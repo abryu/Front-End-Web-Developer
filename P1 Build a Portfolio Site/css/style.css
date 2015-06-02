@@ -75,7 +75,7 @@ a {
     -webkit-transform: translate(-9999px, 0);
     transform: translate(-9999px, 0);
     /* Optionally, we animate the drawer. */
-    transition: transform 0.5s ease;
+    transition: transform 0.3s ease;
   }
   .nav.open {
     -webkit-transform: translate(0, 0);
@@ -95,6 +95,6 @@ a {
   }
   .header__menu svg {
     width: 32px;
-    fill: #E0E0E0;
+    color: #000000;
   }
 }
