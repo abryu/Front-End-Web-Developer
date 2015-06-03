@@ -25,7 +25,8 @@ a {
   min-height: 48px;
 }
 
-.header__menu,.nav__item {
+.header__menu,
+.nav__item {
   display: none;
 }
 
@@ -35,7 +36,7 @@ a {
 
 .featuredWork {
   color: #bcbbbb;
-  font: 400 2em 'Roboto', sans-serif;
+  font: 400 2em "Roboto", sans-serif;
 }
 
 .featuredWorkTitle {
@@ -48,17 +49,19 @@ a {
 
 .text-name {
   margin-top: 50px;
-  font: 100 3em 'Roboto', sans-serif;
+  font: 100 3em "Roboto", sans-serif;
 }
 
 .text-position {
-  font: 500 2em 'Roboto', sans-serif;
+  font: 500 2em "Roboto", sans-serif;
 }
 
 @media screen and (max-width: 549px) {
+
   .img-p {
     max-width: 30%;
   }
+
   .container {
     max-width: 100%;
     display: flex;
@@ -76,24 +79,28 @@ a {
     /* Optionally, we animate the drawer. */
     transition: transform 0.3s ease;
   }
+
   .nav.open {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
   }
+
   .nav__item {
     display: list-item;
     border-bottom: 1px solid #e0e0e0;
     width: 100%;
     text-align: left;
   }
+
   .header__menu {
     display: inline-block;
     position: absolute;
     right: 0;
     padding: 1em;
   }
+
   .header__menu svg {
     width: 32px;
-    color: #000000;
+    color: #000;
   }
 }

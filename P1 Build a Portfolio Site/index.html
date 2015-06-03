@@ -13,15 +13,22 @@
 	</head>
 	<body>
 		<div class="container">
-			<header>
-				<div class="row">
+			<header class="row">
 					<div class="col-md-4">
 						<nav id="drawer" class="nav">
 						    <ul class="nav__list">
-								<li class="nav__item">TEL: 647-459-4333</li>
-								<li class="nav__item"><a href="mailto:wenboyu2208@gmail.com" target="_top">Send an email</a></li>
-								<li class="nav__item"><a href="https://www.facebook.com/abraham.yu.92" class="zocial-facebook"></a></li>
-								<li class="nav__item"><a href="https://ca.linkedin.com/pub/wenbo-yu/8b/187/73b" class="zocial-linkedin"></a></li>
+								<li class="nav__item">
+									TEL: 647-459-4333
+								</li>
+								<li class="nav__item">
+									<a href="mailto:wenboyu2208@gmail.com" target="_top">Send an email</a>
+								</li>
+								<li class="nav__item">
+									<a href="https://www.facebook.com/abraham.yu.92" class="zocial-facebook"></a>
+								</li>
+								<li class="nav__item">
+									<a href="https://ca.linkedin.com/pub/wenbo-yu/8b/187/73b" class="zocial-linkedin"></a>
+								</li>
 							</ul>
 						</nav>
 						<img src="http://a1.qpic.cn/psb?/V122oo7P43xrFT/mumJQHkEIBwtngH*DFTFMBX5pmB5PblL*oDsc90Dp*w!/b/dBUAAAAAAAAA&amp;bo=gAJsAgAAAAAFAM8!&amp;rf=viewer_4" class="img-responsive img-circle img-p" alt="Responsive image" width="120" height="120" data-toggle="modal" data-target="#contactInfo">
@@ -32,7 +39,6 @@
 						<h1 class="text-right text-name">WENBO YU</h1>
 						<h4 class="text-right text-position">FRONT-END NINJA</h4>
 					</div>
-				</div>
 			</header>
 
 			<hr>
@@ -45,9 +51,9 @@
 				<div class="col-md-2">
 					<a id="menu" class="header__menu">
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-							   <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
+							<path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
 						</svg>
-					</a>	
+					</a>
 				</div>
 			</div>
 
@@ -56,7 +62,6 @@
 					<div class="col-md-4">
 						<h2 class="featuredWork">Featured Work</h2>
 					</div>
-					<div class="col-md-8"></div>
 				</div>
 			</header>
 
@@ -90,10 +95,18 @@
 							<p>I am a 3rd-year Information Technology student at York University, Toronto. <br>Experienced in Java and Digital Media Specialist.</p>
 							<h5>You can find me by</h5>
 							<ul>
-								<li>TEL: 647-459-4333</li>
-								<li><a href="https://ca.linkedin.com/pub/wenbo-yu/8b/187/73b" class="zocial-linkedin"></a></li>
-								<li><a href="mailto:wenboyu2208@gmail.com" target="_top">Send an email</a></li>
-								<li><a href="https://www.facebook.com/abraham.yu.92" class="zocial-facebook"></a></li>
+								<li>
+									TEL: 647-459-4333
+								</li>
+								<li>
+									<a href="https://ca.linkedin.com/pub/wenbo-yu/8b/187/73b" class="zocial-linkedin"></a>
+								</li>
+								<li>
+									<a href="mailto:wenboyu2208@gmail.com" target="_top">Send an email</a>
+								</li>
+								<li>
+									<a href="https://www.facebook.com/abraham.yu.92" class="zocial-facebook"></a>
+								</li>
 							</ul>
 						</div>
 						<div class="modal-footer">
@@ -109,7 +122,6 @@
 			* Open the drawer when the menu ison is clicked.
 			*/
 			var menu = document.querySelector('#menu');
-			var main = document.querySelector('main');
 			var drawer = document.querySelector('.nav');
 
 			menu.addEventListener('click', function(e) {
