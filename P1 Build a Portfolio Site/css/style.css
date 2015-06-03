@@ -1,29 +1,28 @@
 @import url(http://weloveiconfonts.com/api/?family=zocial);
-
 /* zocial */
 [class*="zocial-"]:before {
-  font-family: 'zocial', sans-serif;
+  font-family: "zocial", sans-serif;
 }
 
 hr {
-	border: 2px solid #a0a0a0;
+  border: 2px solid #a0a0a0;
 }
 
 h6 {
-	margin-bottom: 1px;
+  margin-bottom: 1px;
 }
 
 ul {
-	list-style-type: circle;
+  list-style-type: circle;
 }
 
 img {
-	max-width: 100%;
+  max-width: 100%;
 }
 
 a {
-	min-width: 48px;
-	min-height: 48px;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .header__menu,.nav__item {
@@ -31,29 +30,29 @@ a {
 }
 
 .container {
-	flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .featuredWork {
-	color: #bcbbbb;
-	font: 400 2em 'Roboto', sans-serif;
+  color: #bcbbbb;
+  font: 400 2em 'Roboto', sans-serif;
 }
 
 .featuredWorkTitle {
-	color: #747704;
+  color: #747704;
 }
 
 .img-p {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
 .text-name {
-	margin-top: 50px;
-	font: 100 3em 'Roboto', sans-serif;
+  margin-top: 50px;
+  font: 100 3em 'Roboto', sans-serif;
 }
 
 .text-position {
-	font: 500 2em 'Roboto', sans-serif;
+  font: 500 2em 'Roboto', sans-serif;
 }
 
 @media screen and (max-width: 549px) {
@@ -83,7 +82,7 @@ a {
   }
   .nav__item {
     display: list-item;
-    border-bottom: 1px solid #E0E0E0;
+    border-bottom: 1px solid #e0e0e0;
     width: 100%;
     text-align: left;
   }
