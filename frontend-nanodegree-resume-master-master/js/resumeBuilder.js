@@ -11,6 +11,7 @@ var bio = {
 	},
 	"welcomeMessage" : "Hello! I am enrolleing in York University Information Technology major and looking for a position of Front-End Web Developer.",
 	"skills" : ["HTML", "CSS", "Javascript", "Java", "Python"],
+
 	"display" : function(){
 		var formattedName = HTMLheaderName.replace("%data%", bio.name);
 		var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
@@ -38,11 +39,11 @@ var bio = {
 				 .append(formattedLocation);
 
 		if (bio.skills.length > 0) {
-		            $('#header').append(HTMLskillsStart);
-		            for (skill in bio.skills) {
-		                var formattedSkills = HTMLskills.replace("%data%", bio.skills[skill]);
-		                $('#skills').append(formattedSkills);
-		            }
+					$('#header').append(HTMLskillsStart);
+					for (skill in bio.skills) {
+						var formattedSkills = HTMLskills.replace("%data%", bio.skills[skill]);
+						$('#skills').append(formattedSkills);
+					}
 		}
 	}
 };
@@ -56,6 +57,7 @@ var projects = {
 		}
 
 	],
+
 	"display" : function () {
 		for (project in projects.projects) {
 		$("#projects").append(HTMLprojectStart);
@@ -74,46 +76,47 @@ var projects = {
 
 
 var education = {
-    "schools": [
-        {
-            "name": "York University",
-            "location": "Toronto, ON",
-            "degree": "Bachelor of Arts",
-            "major": "Information Technology",
-            "dates": " Sept. 2013 to Present",
-            "url": "http://www.yorku.ca/index.html"
-        },
-        {
-        	"name": "Shandong Jianzhu University",
-            "location": "Jinan, China",
-            "degree": "Diploma",
-            "major": "International Business",
-            "dates": "2010-2013",
-            "url": "http://www.sdjzu.edu.cn/index.php"
-        }
-    ],
-    "onlineCourses" : [
-   		{
-   			"title" : "Front-End Web Developer Nanodegree",
-   			"school" : "Udacity",
-    		"dates" : "2015",
-   			"url": "http://www.udacity.com"
-   		},
-   		{
-   			"title" : "Analytics Certification",
-   			"school" : "Google",
-    		"dates" : "November 2014",
-   			"url": "http://www.google.ca/analytics/"
-   		},
-   		{
-   			"title" : "Honor Code Certificate for  Introduction to Computer Science and Programming Using Python",
-   			"school" : "MITx in edX",
-    		"dates" : "November 2014",
-   			"url": "https://courses.edx.org/courses/MITx/6.00.1x_5/1T2015/info"
-   		}
-    ],
-    "display" : function() {
-    	for (school in education.schools) {
+	"schools": [
+		{
+			"name": "York University",
+			"location": "Toronto, ON",
+			"degree": "Bachelor of Arts",
+			"major": "Information Technology",
+			"dates": " Sept. 2013 to Present",
+			"url": "http://www.yorku.ca/index.html"
+		},
+		{
+			"name": "Shandong Jianzhu University",
+			"location": "Jinan, China",
+			"degree": "Diploma",
+			"major": "International Business",
+			"dates": "2010-2013",
+			"url": "http://www.sdjzu.edu.cn/index.php"
+		}
+	],
+	"onlineCourses" : [
+		{
+			"title" : "Front-End Web Developer Nanodegree",
+			"school" : "Udacity",
+			"dates" : "2015",
+			"url": "http://www.udacity.com"
+		},
+		{
+			"title" : "Analytics Certification",
+			"school" : "Google",
+			"dates" : "November 2014",
+			"url": "http://www.google.ca/analytics/"
+		},
+		{
+			"title" : "Honor Code Certificate for  Introduction to Computer Science and Programming Using Python",
+			"school" : "MITx in edX",
+			"dates" : "November 2014",
+			"url": "https://courses.edx.org/courses/MITx/6.00.1x_5/1T2015/info"
+		}
+	],
+
+	"display" : function() {
+		for (school in education.schools) {
 
 			$("#education").append(HTMLschoolStart);
 
@@ -144,7 +147,7 @@ var education = {
 									  .append(formattedOnlineDates)
 									  .append(formattedOnlineURL);
 		}
-    }
+	}
 };
 
 var work = {
@@ -164,6 +167,7 @@ var work = {
 			"description": "• Familiarized in agile methodology and development cycle. • Practiced Axure RP, OmniGraffle, OmniPlan and MindManager based on a project of Jinan real estate financial management system. Learnt and practiced the fundamental knowledge of Oracle 11g, UML."
 		}
 		],
+
 	"display" : function() {
 		for (job in work.jobs) {
 
