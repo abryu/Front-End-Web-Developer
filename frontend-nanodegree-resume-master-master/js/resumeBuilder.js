@@ -34,9 +34,9 @@ var bio = {
 						 .append(formattedLocation);
 
 		$("#footerContacts").append(formattedMobile)
-				 .append(formattedEmail)
-				 .append(formattedGitHub)
-				 .append(formattedLocation);
+							.append(formattedEmail)
+							.append(formattedGitHub)
+							.append(formattedLocation);
 
 		if (bio.skills.length > 0) {
 					$('#header').append(HTMLskillsStart);
@@ -60,16 +60,16 @@ var projects = {
 
 	"display" : function () {
 		for (project in projects.projects) {
-		$("#projects").append(HTMLprojectStart);
+			$("#projects").append(HTMLprojectStart);
 
-		var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.projects[project].title);
-		$(".project-entry:last").append(formattedProjectTitle);
+			var formattedProjectTitle = HTMLprojectTitle.replace("%data%", projects.projects[project].title);
+			$(".project-entry:last").append(formattedProjectTitle);
 
-		var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.projects[project].dates);
-		$(".project-entry:last").append(formattedProjectDates);
+			var formattedProjectDates = HTMLprojectDates.replace("%data%", projects.projects[project].dates);
+			$(".project-entry:last").append(formattedProjectDates);
 
-		var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description);
-		$(".project-entry:last").append(formattedProjectDescription);	
+			var formattedProjectDescription = HTMLprojectDescription.replace("%data%", projects.projects[project].description);
+			$(".project-entry:last").append(formattedProjectDescription);	
 		}
 	}
 };
