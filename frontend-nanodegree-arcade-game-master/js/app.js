@@ -112,19 +112,19 @@ Player.prototype.handleInput = function(keys) {
             }
             break;
         case 'KeyQ':
-            this.roleChanger('images/char-boy.png');
+            this.roleChanger(availableRole[0]);
             break;
         case 'KeyW':
-            this.roleChanger('images/char-cat-girl.png');
+            this.roleChanger(availableRole[1]);
             break;
         case 'KeyE':
-            this.roleChanger('images/char-horn-girl.png');
+            this.roleChanger(availableRole[2]);
             break;
         case 'KeyR':           
-            this.roleChanger('images/char-pink-girl.png');
+            this.roleChanger(availableRole[3]);
             break;
         case 'KeyT':
-            this.roleChanger('images/char-princess-girl.png');
+            this.roleChanger(availableRole[4]);
             break;
         default:
             return;
@@ -200,7 +200,7 @@ var gem = new Gem();
 var gemCollisionDetection = function(gemPosition) {
     if((gemPosition.x - player.x < 100 && gemPosition.y - player.y < 50)
         && (gemPosition.x - player.x > -100 && gemPosition.y - player.y > -50)) {
-        player.finalScore += 7;
+        player.finalScore += 3;
         console.log('COLLECTION!' + player.finalScore);
         gem = new Gem();
     }

@@ -156,7 +156,7 @@ var Engine = (function(global) {
          */
 
         gem.render();
-        
+     
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -191,7 +191,8 @@ var Engine = (function(global) {
         'images/Selector.png',
         'images/Gem Orange.png',
         'images/Gem Blue.png',
-        'images/Gem Green.png'
+        'images/Gem Green.png',
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
