@@ -57,6 +57,8 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
+
+
     };
 
     /* This function does some initial setup that should only occur once,
@@ -133,6 +135,10 @@ var Engine = (function(global) {
                  * we're using them over and over.
                  */
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                ctx.font="30px Times New Roman";
+                ctx.fillStyle = 'red';
+                ctx.fillText("Your score is " + player.finalScore,10,90);
+                ctx.drawImage(Resources.get('images/Selector.png'), 202, 390);
             }
         }
 
@@ -148,11 +154,16 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+
+        gem.render();
+        
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+
+
     }
 
     /* This function does nothing but it could have been a good place to
@@ -172,7 +183,15 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png',
+        'images/Selector.png',
+        'images/Gem Orange.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png'
     ]);
     Resources.onReady(init);
 
