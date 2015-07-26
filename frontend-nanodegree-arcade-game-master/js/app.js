@@ -2,8 +2,7 @@ var availableEnemyY = [60,140,220];
 var availableEnemyX = [-100,-200,-300,-400,-500];
 var availableGem = ['images/Gem Orange.png','images/Gem Blue.png','images/Gem Green.png'];
 var availableRole = ['images/char-boy.png','images/char-cat-girl.png','images/char-horn-girl.png','images/char-pink-girl.png','images/char-princess-girl.png'];
-var finalScore = 0;
-var starHide = true;
+
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -15,7 +14,7 @@ var Enemy = function() {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -31,13 +30,13 @@ Enemy.prototype.update = function(dt) {
         this.speed = Math.round(Math.random() * 101 + 10);
     }
 
-    collisionDetection(this);
-}
+    this.collisionDetection(this);
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 // Now write your own player class
 // This class requires an update(), render() and
@@ -52,21 +51,21 @@ var Player = function(x,y) {
 };
 
 Player.prototype.update = function(variableX,variableY) {
-    if(this.updateForKey == true) {
+    if(this.updateForKey === true) {
         this.x = this.x + variableX;
         this.y = this.y + variableY;
         this.updateForKey = false;
     }
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 404;
-}
+};
 
 Player.prototype.handleInput = function(keys) {
     switch(keys) {
@@ -156,13 +155,12 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
-var collisionDetection = function(enemyPosition) {
-    if((enemyPosition.x - player.x < 80 && enemyPosition.y - player.y < 60)
-        && (enemyPosition.x - player.x > -80 && enemyPosition.y - player.y > -60)) {
+Enemy.prototype.collisionDetection = function(enemyPosition) {
+    if((enemyPosition.x - player.x < 80 && enemyPosition.y - player.y < 60) && (enemyPosition.x - player.x > -80 && enemyPosition.y - player.y > -60)) {
         player.finalScore = 0;
         player.reset();
     }
-}
+};
 
 ///////////////////////////////////////Function Of Gem Part////////////////////////////////////
 //Randomly generate a gem
@@ -173,28 +171,27 @@ var Gem = function() {
     this.sprite = gemSelector;
     this.x = Math.floor(Math.random() * 4 + 1) * 101;
     this.y = Math.floor(Math.random() * 5 + 1) * 70;
-}
+};
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    gemCollisionDetection(this);
-}
+    this.gemCollisionDetection(this);
+};
 
 var gem = new Gem();
 
-var gemCollisionDetection = function(gemPosition) {
-    if((gemPosition.x - player.x < 80 && gemPosition.y - player.y < 60)
-        && (gemPosition.x - player.x > -80 && gemPosition.y - player.y > -60)) {
+Gem.prototype.gemCollisionDetection = function(gemPosition) {
+    if((gemPosition.x - player.x < 80 && gemPosition.y - player.y < 60) && (gemPosition.x - player.x > -80 && gemPosition.y - player.y > -60)) {
         player.finalScore += 3;
         gem = new Gem();
     }
-}
+};
 
 //////////////////////////////////////Function Of Character Switch Part/////////////////////////
 
 Player.prototype.roleChanger = function(roleImage) {
     this.sprite = roleImage;
-}
+};
 
 //////////////////////////////////////Function Of Star Part///////////////////////////////////////////
 //A star will automatically generated 10 seconds and adding 19 points to user's score
@@ -205,22 +202,21 @@ var Star = function() {
     this.y = -200;
     this.sprite = 'images/Star.png';
     this.starHide = true;
-}
+};
 
 Star.prototype.render = function() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-        starCollisionDetection(this);
-}
+        this.starCollisionDetection(this);
+};
 
-var starCollisionDetection = function(starPosition) {
-    if((starPosition.x - player.x < 80 && starPosition.y - player.y < 60)
-        && (starPosition.x - player.x > -80 && starPosition.y - player.y > -60)) {
+Star.prototype.starCollisionDetection = function(starPosition) {
+    if((starPosition.x - player.x < 80 && starPosition.y - player.y < 60) && (starPosition.x - player.x > -80 && starPosition.y - player.y > -60)) {
         player.finalScore += 19;
         star.changeStatus();//Setting star can be seen and generate it's location
         star = new Star();//Generating a new star, cannot be seen.
         var starTimer = setInterval(function(){star.changeStatus()}, 10000);
     }
-}
+};
 
 var star = new Star();
 var starTimer = setInterval(function(){star.changeStatus() }, 10000);
@@ -229,4 +225,4 @@ Star.prototype.changeStatus = function() {
         this.starHide = false;
         this.x = Math.floor(Math.random() * 4 + 1) * 101;
         this.y = Math.floor(Math.random() * 5 + 1) * 70;
-}
+};
