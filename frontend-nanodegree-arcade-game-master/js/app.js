@@ -12,7 +12,6 @@ var Enemy = function() {
     this.x = availableEnemyX[Math.floor(Math.random() * availableEnemyX.length)];
     this.y = availableEnemyY[Math.floor(Math.random() * availableEnemyY.length)];
     this.speed = Math.round(Math.random() * 101 + 40);
-    //console.log("ENEMY CONSTRUCTOR " + this.x, this.y, this.speed);
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -30,7 +29,6 @@ Enemy.prototype.update = function(dt) {
         this.x = availableEnemyX[Math.floor(Math.random() * availableEnemyX.length)];
         this.y = availableEnemyY[Math.floor(Math.random() * availableEnemyY.length)];
         this.speed = Math.round(Math.random() * 101 + 10);
-        //console.log("NEW ENEMY CONSTRUCTOR " + this.x, this.y, this.speed);
     }
 
     collisionDetection(this);
@@ -51,46 +49,39 @@ var Player = function(x,y) {
     this.y = y;
     this.updateForKey = false;
     this.finalScore = 0;
-    //console.log('NEW PLAYER CONSTRUCTOR ' + this.x, this.y, this.finalScore);
 };
 
 Player.prototype.update = function(variableX,variableY) {
     if(this.updateForKey == true) {
         this.x = this.x + variableX;
         this.y = this.y + variableY;
-        console.log('PLAYER UPDATED');
         this.updateForKey = false;
     }
 }
 
 Player.prototype.render = function() {
-    //console.log('PLAYER DRAW ' + this.x, this.y);
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 Player.prototype.reset = function() {
     this.x = 202;
     this.y = 404;
-    console.log('RESET');
 }
 
 Player.prototype.handleInput = function(keys) {
     switch(keys) {
         case 'up':
             if(this.y > 101) {
-                //this.y -= 90;
                 this.updateForKey = true;
                 this.update(0,-90);
                 console.log('up ' + this.x, this.y);
         } else {
             this.finalScore += 20;
-            console.log('SCORE!' + this.finalScore);
             player.reset();
             }
             break;
          case 'down':
             if(this.y < 375) {
-                //this.y += 90;
                 this.updateForKey = true;
                 this.update(0,90);
                 console.log('down ' + this.x, this.y);
@@ -98,7 +89,6 @@ Player.prototype.handleInput = function(keys) {
             break;
         case 'left':
             if(this.x > 40) {
-                //this.x -= 100;
                 this.updateForKey = true;
                 this.update(-100,0);
                 console.log('left ' + this.x, this.y);
@@ -106,7 +96,6 @@ Player.prototype.handleInput = function(keys) {
             break;
         case 'right':
             if(this.x < 400) {
-                //this.x += 100;
                 this.updateForKey = true;
                 this.update(100,0);
                 console.log('right ' + this.x, this.y);
@@ -157,26 +146,27 @@ document.addEventListener('keyup', function(e) {
         38: 'up',
         39: 'right',
         40: 'down',
-        81: 'KeyQ',
-        87: 'KeyW',
-        69: 'KeyE',
-        82: 'KeyR',
-        84: 'KeyT'
+        81: 'KeyQ',//Adding key listener.
+        87: 'KeyW',//So users can select characters
+        69: 'KeyE',//while playing.
+        82: 'KeyR',//
+        84: 'KeyT' //
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
 var collisionDetection = function(enemyPosition) {
-    if((enemyPosition.x - player.x < 100 && enemyPosition.y - player.y < 72)
-        && (enemyPosition.x - player.x > -100 && enemyPosition.y - player.y > -72)) {
+    if((enemyPosition.x - player.x < 80 && enemyPosition.y - player.y < 60)
+        && (enemyPosition.x - player.x > -80 && enemyPosition.y - player.y > -60)) {
         player.finalScore = 0;
-        console.log('COLLISION!' + player.finalScore);
         player.reset();
     }
 }
 
-//Function Of Gem Part
+///////////////////////////////////////Function Of Gem Part////////////////////////////////////
+//Randomly generate a gem
+//User collect it will add 3 points and a new gem generated immediately
 
 var Gem = function() {
     var gemSelector = availableGem[Math.floor(Math.random() * availableGem.length)];
@@ -187,30 +177,30 @@ var Gem = function() {
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    console.log('GEM DRAW ' + this.x, this.y);
     gemCollisionDetection(this);
 }
 
 var gem = new Gem();
 
 var gemCollisionDetection = function(gemPosition) {
-    if((gemPosition.x - player.x < 100 && gemPosition.y - player.y < 50)
-        && (gemPosition.x - player.x > -100 && gemPosition.y - player.y > -50)) {
+    if((gemPosition.x - player.x < 80 && gemPosition.y - player.y < 60)
+        && (gemPosition.x - player.x > -80 && gemPosition.y - player.y > -60)) {
         player.finalScore += 3;
-        console.log('COLLECTION!' + player.finalScore);
         gem = new Gem();
     }
 }
 
-//Function Of Character Switch Part
+//////////////////////////////////////Function Of Character Switch Part/////////////////////////
 
 Player.prototype.roleChanger = function(roleImage) {
     this.sprite = roleImage;
 }
 
-//Function Of Star Part
+//////////////////////////////////////Function Of Star Part///////////////////////////////////////////
+//A star will automatically generated 10 seconds and adding 19 points to user's score
 
 var Star = function() {
+    //Setting star cannot be seen, initially
     this.x = -200;
     this.y = -200;
     this.sprite = 'images/Star.png';
@@ -223,12 +213,11 @@ Star.prototype.render = function() {
 }
 
 var starCollisionDetection = function(starPosition) {
-    if((starPosition.x - player.x < 100 && starPosition.y - player.y < 50)
-        && (starPosition.x - player.x > -100 && starPosition.y - player.y > -50)) {
+    if((starPosition.x - player.x < 80 && starPosition.y - player.y < 60)
+        && (starPosition.x - player.x > -80 && starPosition.y - player.y > -60)) {
         player.finalScore += 19;
-        console.log('STAR COLLECTION!' + player.finalScore);
-        star.changeStatus();
-        star = new Star();
+        star.changeStatus();//Setting star can be seen and generate it's location
+        star = new Star();//Generating a new star, cannot be seen.
         var starTimer = setInterval(function(){star.changeStatus()}, 10000);
     }
 }
@@ -240,4 +229,4 @@ Star.prototype.changeStatus = function() {
         this.starHide = false;
         this.x = Math.floor(Math.random() * 4 + 1) * 101;
         this.y = Math.floor(Math.random() * 5 + 1) * 70;
-    }
+}
