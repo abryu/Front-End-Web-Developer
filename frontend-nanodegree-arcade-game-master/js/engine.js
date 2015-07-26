@@ -156,7 +156,9 @@ var Engine = (function(global) {
          */
 
         gem.render();
-     
+
+        star.render();
+        
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });

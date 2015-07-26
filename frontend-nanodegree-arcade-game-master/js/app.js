@@ -3,6 +3,7 @@ var availableEnemyX = [-100,-200,-300,-400,-500];
 var availableGem = ['images/Gem Orange.png','images/Gem Blue.png','images/Gem Green.png'];
 var availableRole = ['images/char-boy.png','images/char-cat-girl.png','images/char-horn-girl.png','images/char-pink-girl.png','images/char-princess-girl.png'];
 var finalScore = 0;
+var starHide = true;
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -175,12 +176,7 @@ var collisionDetection = function(enemyPosition) {
     }
 }
 
-var myVar=setInterval(function(){myTimer()},1000);
-
-function myTimer() {
-    var d = new Date();
-    document.getElementById("time").innerHTML = d.toLocaleTimeString();
-}
+//Function Of Gem Part
 
 var Gem = function() {
     var gemSelector = availableGem[Math.floor(Math.random() * availableGem.length)];
@@ -206,7 +202,42 @@ var gemCollisionDetection = function(gemPosition) {
     }
 }
 
+//Function Of Character Switch Part
+
 Player.prototype.roleChanger = function(roleImage) {
     this.sprite = roleImage;
 }
 
+//Function Of Star Part
+
+var Star = function() {
+    this.x = -200;
+    this.y = -200;
+    this.sprite = 'images/Star.png';
+    this.starHide = true;
+}
+
+Star.prototype.render = function() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        starCollisionDetection(this);
+}
+
+var starCollisionDetection = function(starPosition) {
+    if((starPosition.x - player.x < 100 && starPosition.y - player.y < 50)
+        && (starPosition.x - player.x > -100 && starPosition.y - player.y > -50)) {
+        player.finalScore += 19;
+        console.log('STAR COLLECTION!' + player.finalScore);
+        star.changeStatus();
+        star = new Star();
+        var starTimer = setInterval(function(){star.changeStatus()}, 10000);
+    }
+}
+
+var star = new Star();
+var starTimer = setInterval(function(){star.changeStatus() }, 10000);
+        
+Star.prototype.changeStatus = function() {
+        this.starHide = false;
+        this.x = Math.floor(Math.random() * 4 + 1) * 101;
+        this.y = Math.floor(Math.random() * 5 + 1) * 70;
+    }
