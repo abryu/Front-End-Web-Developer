@@ -214,12 +214,12 @@ Star.prototype.starCollisionDetection = function(starPosition) {
         player.finalScore += 19;
         star.changeStatus();//Setting star can be seen and generate it's location
         star = new Star();//Generating a new star, cannot be seen.
-        var starTimer = setInterval(function(){star.changeStatus()}, 10000);
+        var starTimer = setInterval(function(){star.changeStatus();}, 10000);
     }
 };
 
 var star = new Star();
-var starTimer = setInterval(function(){star.changeStatus() }, 10000);
+var starTimer = setInterval(function(){star.changeStatus();}, 10000);
         
 Star.prototype.changeStatus = function() {
         this.starHide = false;
