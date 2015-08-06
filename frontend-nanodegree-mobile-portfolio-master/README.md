@@ -30,16 +30,16 @@ Some useful tips to help you get started:
 ###MY OPTIMAZATION 
 
 For part 1 to get a score larger than 90, I
-	1. Compress and resize images.
-	1. Combine inline CSS to eliminate render-blocking.
-	1. Add async tag to script.
-	1. Add print media tag.
-	1. Move google font to CSS file.
+	* Compress and resize images.
+	* Combine inline CSS to eliminate render-blocking.
+	* Add async tag to script.
+	* Add print media tag.
+	*  Move google font to CSS file.
 
 For part 2, I
-	1. Pull out parse constants that need to be calculated repeatedly.
-	1. Change querySelector to getElementsByClassName to accelerate.
-	1. Diminish unnecessary pizzas from addEvenListener.
+	* Pull out parse constants that need to be calculated repeatedly.
+	*  Change querySelector to getElementsByClassName to accelerate.
+	*  Diminish unnecessary pizzas from addEvenListener.
 
 
 
