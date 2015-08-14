@@ -12,21 +12,35 @@
 	</head>
 	<body>
 		<div class="container-fluid">
+
 			<div class="row">
 				<div class="col-md-9" id="googleMapDisplyArea"></div>
+
 				<div class="col-md-3 searchBox">
-					<form action="https://www.google.com/cse" method="get" autocoplete="on">
+					<form action="js/app.js" method="get" autocoplete="on">
 						<input type="text" name="searchBoxText" placeholder="Type in your interest place"/>
 						<input type="submit" value="Go To Your Places!"/>
 					</form>
-				</div>
-			</div>
-		</div>
+					
+					<ul class="list-group">
+					  <li class="list-group-item list-group-item-success">Toronto</li>
+					  <li class="list-group-item list-group-item-info">Hamilton</li>
+					  <li class="list-group-item list-group-item-warning">Buffalo</li>
+					  <li class="list-group-item list-group-item-danger">London</li>
+					  <li class="list-group-item list-group-item-success">Waterloo</li>
+					  <li class="list-group-item list-group-item-info">Niagara Falls</li>
+					  <li class="list-group-item list-group-item-warning">Guelph</li>
+					</ul>
 
-		<script>
-			$(document).ready(function() {
-			});
-		</script>
+					<div class="wikipedia-container">
+						<h3 id="wikipedia-header">Relevent Wikipedia Links</h3>
+						<ul id="wikipedia-links"></ul>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
 	</body>
 </html>
 

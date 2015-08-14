@@ -3,3 +3,7 @@
 	height:700px;
 	background-color: #CCC;
 }
+
+ul {
+	list-style-type: none;
+}
