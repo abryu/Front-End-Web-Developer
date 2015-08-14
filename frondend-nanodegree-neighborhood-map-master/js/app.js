@@ -65,10 +65,10 @@ $(document).ready(function() {
 				success: function(response) {
 					var articleList = response[1];
 					var articleStr = "";
-					for (var i = 0; i < articleList.length; i++) {
+					for (var i = 0; i < 8; i++) {
 						articleStr = articleList[i];
 						var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-						$wikiElem.append('<li class="list-group-item list-group-item-info"><a href="' + url + '">' + articleStr + '</a></li>');
+						$wikiElem.append('<li class="list-group-item"><a href="' + url + '">' + articleStr + '</a></li>');
 					};
 					clearTimeout(wikiRequestTimeout);
 				}
