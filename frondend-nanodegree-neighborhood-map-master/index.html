@@ -21,16 +21,8 @@
 						<input type="text" name="searchBoxText" placeholder="Type in your interest place"/>
 						<input type="submit" value="Go To Your Places!"/>
 					</form>
-					
-					<ul class="list-group">
-					  <li class="list-group-item list-group-item-success">Toronto</li>
-					  <li class="list-group-item list-group-item-info">Hamilton</li>
-					  <li class="list-group-item list-group-item-warning">Buffalo</li>
-					  <li class="list-group-item list-group-item-danger">London</li>
-					  <li class="list-group-item list-group-item-success">Waterloo</li>
-					  <li class="list-group-item list-group-item-info">Niagara Falls</li>
-					  <li class="list-group-item list-group-item-warning">Guelph</li>
-					</ul>
+
+					<select data-bind="options: aCity, optionsText:'Choose Your City'"></select>
 
 					<div class="wikipedia-container">
 						<h3 id="wikipedia-header">Relevent Wikipedia Links:</h3>
@@ -40,13 +32,13 @@
 			</div>
 
 			<div class="row">
-					<div class="wikipedia-container col-md-6">
-						<h3 id="wikipedia-header">NYT Local News:</h3>
-						<ul id="wikipedia-links"></ul>
+					<div class="nyt-container col-md-6">
+						<h3 id="nyt-header">NYT Local News:</h3>
+						<ul id="nyt-links"></ul>
 					</div>
-					<div class="wikipedia-container col-md-6">
-						<h3 id="wikipedia-header">YELP:</h3>
-						<ul id="wikipedia-links"></ul>
+					<div class="weather-container col-md-6">
+						<h3 id="weather-header">Current Weather:</h3>
+						<ul id="weather-links"></ul>
 					</div>					
 			</div>
 
