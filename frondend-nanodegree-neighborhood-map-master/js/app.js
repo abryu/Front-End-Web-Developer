@@ -27,7 +27,11 @@ $(document).ready(function() {
 			return ct.name;
 		}
 
-		console.log(this.getCityName(this.chosenCity));
+		this.test = function() {
+			return "ttt"
+		};
+
+		console.log(this.test());
 
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
