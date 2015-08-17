@@ -1,16 +1,33 @@
 "use strict";
 $(document).ready(function() {
 	function ViewModel() {
-	var aCity = ["abc","def","asd"];
-	var availableCity = [
-		{city:"Toronto",location:{lat: 43.653226, lng: -79.3831843}},
-		{city:"Hamilton",location:{lat: 43.243603, lng: -79.889075}},
-		{city:"Buffalo",location:{lat: 42.8864468, lng: -78.8783689}},
-		{city:"London",location:{lat: 42.979398, lng: -81.246138}},
-		{city:"Waterloo",location:{lat: 43.4642578, lng: -80.5204096}},
-		{city:"Niagara Falls",location:{lat: 43.0903891, lng: -79.0861076}},
-		{city:"Guelph",location:{lat: 43.5448048, lng: -80.2481666}}
-	];
+		var availableCity = [
+			{city:"Toronto",location:{lat: 43.653226, lng: -79.3831843}},
+			{city:"Hamilton",location:{lat: 43.243603, lng: -79.889075}},
+			{city:"Buffalo",location:{lat: 42.8864468, lng: -78.8783689}},
+			{city:"London",location:{lat: 42.979398, lng: -81.246138}},
+			{city:"Waterloo",location:{lat: 43.4642578, lng: -80.5204096}},
+			{city:"Niagara Falls",location:{lat: 43.0903891, lng: -79.0861076}},
+			{city:"Guelph",location:{lat: 43.5448048, lng: -80.2481666}}
+		];
+
+		this.koAvailableCities = ko.observableArray([
+			{city:"Toronto",location:{lat: 43.653226, lng: -79.3831843}},
+			{city:"Hamilton",location:{lat: 43.243603, lng: -79.889075}},
+			{city:"Buffalo",location:{lat: 42.8864468, lng: -78.8783689}},
+			{city:"London",location:{lat: 42.979398, lng: -81.246138}},
+			{city:"Waterloo",location:{lat: 43.4642578, lng: -80.5204096}},
+			{city:"Niagara Falls",location:{lat: 43.0903891, lng: -79.0861076}},
+			{city:"Guelph",location:{lat: 43.5448048, lng: -80.2481666}}
+		]);
+
+		this.chosenCity = ko.observable(this.koAvailableCities[0]);
+
+		this.getCityName = function(ct) {
+			return ct.name;
+		}
+
+		console.log(this.getCityName(this.chosenCity));
 
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
