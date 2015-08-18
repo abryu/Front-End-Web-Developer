@@ -22,7 +22,7 @@
 						<input type="submit" value="Go To Your Places!"/>
 					</form>
 
-					<select data-bind="options: koAvailableCities, optionsText:'city', value: chosenCity"></select>
+					<select data-bind="options: koAvailableCities, optionsText: 'name', value: chosenCity"></select>
 
 					<div class="wikipedia-container">
 						<h3 id="wikipedia-header">Relevent Wikipedia Links:</h3>
@@ -43,7 +43,7 @@
 			</div>
 
 			<div data-bind="with: chosenCity">
-				<p data-bind="text: city"></p>
+				<p data-bind="text: name">123</p>
 			</div>
 
 		</div>
