@@ -3,8 +3,7 @@ $(document).ready(function() {
 
 	var city = function(name, lat, lng) {
 		this.name = name;
-		this.lat = lat;
-		this.lng = lng;
+		this.location = {lat,lng};
 	};
 
 	function ViewModel() {
@@ -32,8 +31,50 @@ $(document).ready(function() {
 
 		this.updateChosenCity = ko.computed(function(){
 			console.log(this.chosenCity().name);
-		},this);
 
+			if(this.chosenCity().name === undefined) {
+				console.log('City Undefined');
+				function initMap() {
+					var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
+					zoom: 9,
+					center: availableCity[1].location
+					});
+
+					for(var i = 0; i < availableCity.length; i++) {
+						var marker = new google.maps.Marker({
+							position: availableCity[i].location,
+							map: map,
+							title: availableCity[i].city
+						});
+					};
+				};
+				google.maps.event.addDomListener(window, 'load', initMap);	
+			} else {
+				//console.log(this.chosenCity().location.lng);
+				var lat = this.chosenCity().location.lat;
+				var lng = this.chosenCity().location.lng;
+				var centerLocationObject = {lat,lng};
+				console.log(centerLocationObject);
+
+				function initMap() {
+					var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
+					zoom: 9,
+					center: centerLocationObject
+					});			
+					for(var i = 0; i < availableCity.length; i++) {
+						var marker = new google.maps.Marker({
+							position: availableCity[i].location,
+							map: map,
+							title: availableCity[i].city
+						});
+					};					
+				};
+
+				initMap();
+				google.maps.event.addDomListener(window, 'load', initMap);						
+			};
+		},this);
+/*
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
 			zoom: 9,
@@ -49,7 +90,7 @@ $(document).ready(function() {
 			};
 		};
 		google.maps.event.addDomListener(window, 'load', initMap);
-
+*/
 		function loadData() {
 			var $wikiElem = $('#wikipedia-links'); 
 			var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + "toronto" + '&format=json&callback=wikiCallback';
@@ -96,7 +137,7 @@ $(document).ready(function() {
 				$weatherElem.text("We are sorry for we cannot get current weather");
 			});			
 			return false;
-		}
+		};
 		loadData();
 
 	};
