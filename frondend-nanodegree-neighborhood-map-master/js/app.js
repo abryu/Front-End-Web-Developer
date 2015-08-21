@@ -4,8 +4,9 @@ $(document).ready(function() {
 		this.name = name;
 		this.location = {lat,lng};
 	};
-	var map;
+
 	function ViewModel() {
+		var map;
 		var availableCity = [
 			{city:"Toronto",location:{lat: 43.653226, lng: -79.3831843}},
 			{city:"Hamilton",location:{lat: 43.243603, lng: -79.889075}},
@@ -33,17 +34,43 @@ $(document).ready(function() {
 			if(this.chosenCity().name === undefined) {
 				console.log('City Undefined');
 			} else {
-				$("#wikipedia-links").empty();;
-				$("#nyt-links").empty();;
-				$("#weather-links").empty();;
+				$("#wikipedia-links").empty();
+				$("#nyt-links").empty();
+				$("#weather-links").empty();
+
 				var cityName = this.chosenCity().name;
 				var lat = this.chosenCity().location.lat;
 				var lng = this.chosenCity().location.lng;
 				var centerLocationObject = {lat,lng};
-				console.log(centerLocationObject);	
-				var center = new google.maps.LatLng(lat, lng);
-				console.log(center);
-				//map.panTo(center);
+				//console.log(centerLocationObject);	
+				var centerLocation = new google.maps.LatLng(lat, lng);
+				console.log(centerLocation);	
+
+				function initMap() {
+					var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
+					zoom: 9,
+					center: centerLocation
+					});
+
+					for(var i = 0; i < availableCity.length; i++) {
+						var marker = new google.maps.Marker({
+							position: availableCity[i].location,
+							map: map,
+							title: availableCity[i].city
+						});
+
+						var infowindow = new google.maps.InfoWindow({
+						  	content:"Hello World!"
+						});
+
+						infowindow.open(map,marker);
+					};
+				};
+
+				google.maps.event.addDomListener(window, 'load', initMap);	
+
+				initMap();
+
 				function loadData() {
 					var $wikiElem = $('#wikipedia-links'); 
 					var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + cityName + '&format=json&callback=wikiCallback';
@@ -51,9 +78,11 @@ $(document).ready(function() {
 					var nytUrl = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?callback=svc_search_v2_articlesearch&q=' + cityName + '&begin_date=20150810&sort=newest&api-key=2c8042c65de29dbdd1c5f102f436c4c9%3A9%3A72642111';
 					var $weatherElem = $('#weather-links');
 					var weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?q=' + cityName;
+					
 					var wikiRequestTimeout = setTimeout(function() {
 						$wikiElem.text("We are sorry for we cannot get wikipedia sources");
 					},8000);
+
 					$.ajax({
 						url: wikiUrl,
 						dataType: "jsonp",
@@ -68,6 +97,7 @@ $(document).ready(function() {
 							clearTimeout(wikiRequestTimeout);
 						}
 					});
+
 					$.getJSON(nytUrl, function(data) {
 						var articles = data.response.docs;
 						for(var i = 0; i < 5; i++) {
@@ -77,6 +107,7 @@ $(document).ready(function() {
 					}).error(function(e) {
 						$nytElem.text("We are sorry for we cannot get NYT sources");
 					});
+
 					$.getJSON(weatherUrl, function(data) {
 								var tempC = (data.main.temp - 273.15).toFixed(2);
 								$weatherElem.append('<ul class="list-group"><li class="list-group-item">Current City : ' 
@@ -94,6 +125,7 @@ $(document).ready(function() {
 			};
 		},this);
 
+/*
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
 			zoom: 9,
@@ -109,6 +141,12 @@ $(document).ready(function() {
 			};
 		};
 		google.maps.event.addDomListener(window, 'load', initMap);
+
+		function moveToNewCenter(lat, lng) {
+			var center = new google.maps.LatLng(lat, lng);
+			map.panTo(center);
+		};
+*/
 	};
 	ko.applyBindings(new ViewModel());
 });
