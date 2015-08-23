@@ -178,5 +178,17 @@ var City = function(data) {
 		output += '</div>';
 		return output;
 	});
-
 };
+
+var ViewModel = function() {
+	var self = this;
+
+	this.neighborhood,
+	this.map,
+	this.infowindow,
+	this.mapBounds;
+
+	
+};
+
+$(ko.applyBindings(new ViewModel()));
