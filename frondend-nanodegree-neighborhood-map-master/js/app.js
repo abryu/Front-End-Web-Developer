@@ -1,4 +1,5 @@
 "use strict";
+/*
 $(document).ready(function() {
 	var city = function(name, lat, lng) {
 		this.name = name;
@@ -125,7 +126,6 @@ $(document).ready(function() {
 			};
 		},this);
 
-/*
 		function initMap() {
 			var map = new google.maps.Map(document.getElementById('googleMapDisplyArea'), {
 			zoom: 9,
@@ -146,7 +146,37 @@ $(document).ready(function() {
 			var center = new google.maps.LatLng(lat, lng);
 			map.panTo(center);
 		};
-*/
+
 	};
 	ko.applyBindings(new ViewModel());
 });
+*/
+
+var cityData = [
+	{name:"Toronto",location:{lat: 43.653226, lng: -79.3831843}},
+	{name:"Hamilton",location:{lat: 43.243603, lng: -79.889075}},
+	{name:"Buffalo",location:{lat: 42.8864468, lng: -78.8783689}},
+	{name:"London",location:{lat: 42.979398, lng: -81.246138}},
+	{name:"Waterloo",location:{lat: 43.4642578, lng: -80.5204096}},
+	{name:"Niagara Falls",location:{lat: 43.0903891, lng: -79.0861076}},
+	{name:"Guelph",location:{lat: 43.5448048, lng: -80.2481666}}
+];
+
+var City = function(data) {
+	var self = this;
+
+	this.name = data.name;
+	this.location = data.location;
+	this.placeData = data.placeData;
+	this.visible = ko.observable(true);
+	this.maker = data.marker;
+
+	this.info = ko.computed( function() {
+		var output = '<div class="info-window">';
+		output += '<p class="window-name">'+self.name+'</p>';
+		output += '<p class="window-address">'+self.address+'</p>';
+		output += '</div>';
+		return output;
+	});
+
+};
