@@ -11,36 +11,7 @@
 		<script src="js/app.js"></script>
 	</head>
 	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-9" id="googleMapDisplyArea"></div>
 
-				<div class="col-md-3 searchBox">
-					<form action="js/app.js" method="get" autocoplete="on">
-						<input type="text" name="searchBoxText" placeholder="Type in your interest place"/>
-						<input type="submit" value="Go To Your Places!"/>
-					</form>
-
-					<select data-bind="options: koAvailableCities, optionsText: 'name', value: chosenCity"></select>
-
-					<div class="wikipedia-container">
-						<h3 id="wikipedia-header">Relevent Wikipedia Links:</h3>
-						<ul id="wikipedia-links"></ul>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-					<div class="nyt-container col-md-6">
-						<h3 id="nyt-header">NYT Local News:</h3>
-						<ul id="nyt-links"></ul>
-					</div>
-					<div class="weather-container col-md-6">
-						<h3 id="weather-header">Current Weather:</h3>
-						<ul id="weather-links"></ul>
-					</div>					
-			</div>
-		</div>
 	</body>
 </html>
 
