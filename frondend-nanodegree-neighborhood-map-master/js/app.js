@@ -69,7 +69,30 @@ var ViewModel = function() {
         return self.userSelected().position;
   });
 
+  var infoWindowElement;
+  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + 'toronto city hall' + '&format=json&callback=wikiCallback';
+
+  var wikiRequestTimeout = setTimeout(function() {
+    infoWindowElement = "We are sorry for we cannot get wikipedia sources";
+  },8000);
+
+  $.ajax({
+    url: wikiUrl,
+    dataType: "jsonp",
+    success: function(response) {
+      var articleList = response[1];
+      var articleStr = "";
+      for (var i = 0; i < 1; i++) {
+        articleStr = articleList[i];
+        var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+        infoWindowElement = '<li class="list-group-item"><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
+      };
+      clearTimeout(wikiRequestTimeout);
+    }
+  });
+
   function initMap() {
+
     var infowindow = new google.maps.InfoWindow();
 
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -86,7 +109,7 @@ var ViewModel = function() {
       }); 
 
       google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(this.name + "<br>" + this.title + "<br>  <a href='https://www.google.ca/'>google</a>");
+          infowindow.setContent(this.name + "<br>" + this.title + "<br>  <a href='https://www.google.ca/'>google</a>" + infoWindowElement);
           infowindow.open(map, this);
           map.panTo(this.position);
       });
