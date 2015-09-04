@@ -1,21 +1,21 @@
 var markersList = [];
 var initialLocations = [
     {
+      name : "Toronto City Hall",
+      description : "A symbol of Toronto!",
+      position : {lat: 43.653483, lng: -79.384094},
+      index : 0
+    },
+    {
       name : "University of Toronto",
       description : "My dream school!",
       position : {lat: 43.662892, lng: -79.395656},
-      index : 0
+      index : 1
     },
     {
       name : "Ryerson University",
       description : "Good school!",
       position : {lat: 43.657658, lng: -79.378802},
-      index : 1
-    },
-    {
-      name : "Toronto City Hall",
-      description : "Have been there two times!",
-      position : {lat: 43.653483, lng: -79.384094},
       index : 2
     },
     {
@@ -74,7 +74,7 @@ var ViewModel = function() {
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
-      center: {lat: 43.653226, lng: -79.3831843}
+      center: {lat: 43.653483, lng: -79.384094}
     });
 
     for(var i = 0; i < initialLocations.length; i++) {
@@ -86,7 +86,7 @@ var ViewModel = function() {
       }); 
 
       google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(this.name + "<br>" + this.title);
+          infowindow.setContent(this.name + "<br>" + this.title + "<br>  <a href='https://www.google.ca/'>google</a>");
           infowindow.open(map, this);
           map.panTo(this.position);
       });
