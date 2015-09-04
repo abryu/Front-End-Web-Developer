@@ -1,7 +1,7 @@
 var initialLocations = [
     {
       name : "University of Toronto",
-      description : "My dreame school!",
+      description : "My dream school!",
       position : {lat: 43.662892, lng: -79.395656}
     },
     {
