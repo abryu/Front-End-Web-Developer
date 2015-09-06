@@ -33,7 +33,7 @@ var initialLocations = [
 var ViewModel = function() {
   var self = this;
 
-  self.userSelected = ko.observable("");
+  self.userSelected = ko.observable(" ");
 
   self.updatedUserSelectedName = ko.computed(function() {
         return self.userSelected().name;
@@ -47,8 +47,23 @@ var ViewModel = function() {
         return self.userSelected().position;
   });
 
-  for(var j = 0; j < initialLocations.length; j++) {
+  self.getPlacesInputValue = function() {
+    var newText = $("#placesInput").val();
+    for(var i = 0; i < initialLocations.length; i++) {
+      if(initialLocations[i].name === newText) {
+        self.userSelected(initialLocations[i]);
+      };
+    };
+  };
 
+  self.clearPlacesInputValue = function() {
+    $("#placesInput").val('');
+    //self.userSelected(initialLocations[0]);
+    //google.maps.event.trigger(markersList[0], 'click');
+    google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
+  };
+
+  for(var j = 0; j < initialLocations.length; j++) {
       var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[j].name + '&format=json&callback=wikiCallback';
       
       var wikiRequestTimeout = setTimeout(function() {
@@ -87,8 +102,6 @@ var ViewModel = function() {
       };
     };
 
-    console.log(orderedInfoList[0]);
-
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
       center: {lat: 43.653483, lng: -79.384094}
@@ -112,7 +125,7 @@ var ViewModel = function() {
       markersList.push(marker);
     };
 
-    self.testUpdate = ko.computed(function() {
+    self.update = ko.computed(function() {
         google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
     });
   };

@@ -10,18 +10,16 @@
   <body>
       <div class='col-md-10' id="map"></div>
 
-      <div class='col-md-2 searchBar'>
-        <form action="js/app.js" method="get" autocoplete="on">
-          <input type="text" name="searchBoxText" placeholder="Your interesting place?"/>
-          <input type="button" value="Search"/>
-        </form>        
+      <div class='col-md-2'>
+        <label for="placesInput">Places:</label>
+        <input id="placesInput" type="text" value="" list="availablePlaces" />
+          <datalist id="availablePlaces" data-bind="foreach: initialLocations">
+            <option data-bind="value: name"></option>
+          </datalist>
+        <input type="submit" data-bind="click: getPlacesInputValue">    
+        <button type="button" data-bind="click: clearPlacesInputValue">Clear</button>  
       </div>
-      <select data-bind = "options: initialLocations, optionsText: 'name', value: userSelected"></select>
 
-      <p></p>      
-      <p data-bind = "text: userSelected().name">a</p>
-      <p data-bind = "text: userSelected().description">a</p>
-      <p data-bind = "text: userSelected().index">a</p>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src='js/knockout-3.2.0.js'></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
