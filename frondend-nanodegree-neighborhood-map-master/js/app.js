@@ -1,6 +1,7 @@
 var markersList = [];
 var infoWindowList = [];
 var infoWindowElement;
+var orderedInfoList = [];
 
 var initialLocations = [
     {
@@ -21,7 +22,6 @@ var initialLocations = [
       position : {lat: 43.662892, lng: -79.395656},
       index : 2
     },
-
     {
       name : "Toronto Symphony Orchestra",
       description : "I like Classical Music!!",
@@ -50,9 +50,7 @@ var ViewModel = function() {
   for(var j = 0; j < initialLocations.length; j++) {
 
       var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[j].name + '&format=json&callback=wikiCallback';
-
-      console.log(wikiUrl);
-
+      
       var wikiRequestTimeout = setTimeout(function() {
         infoWindowElement = "We are sorry for we cannot get wikipedia sources";
       },8000);
@@ -67,20 +65,29 @@ var ViewModel = function() {
             articleStr = articleList[i];
             var url = 'http://en.wikipedia.org/wiki/' + articleStr;
             infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-            console.log(articleStr + ' for ajax');
           };
           clearTimeout(wikiRequestTimeout);
-          console.log(infoWindowElement);
           infoWindowList.push(infoWindowElement);
         }
       });    
-      infoWindowList.sort();
   };
   
   function initMap() {
     var infowindow = new google.maps.InfoWindow();
 
-    console.log(infoWindowList.length);
+    for(var k = 0; k < infoWindowList.length; k++) {
+      if (infoWindowList[k].indexOf('Ryerson University') > -1) {
+        orderedInfoList[0]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
+        orderedInfoList[1]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
+        orderedInfoList[2]=infoWindowList[k];
+      } else {
+        orderedInfoList[3]=infoWindowList[k];
+      };
+    };
+
+    console.log(orderedInfoList[0]);
 
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
@@ -88,19 +95,16 @@ var ViewModel = function() {
     });
 
     for(var i = 0; i < initialLocations.length; i++) {
-
-      console.log(infoWindowList[i]);
-
       var marker = new google.maps.Marker({
         name : initialLocations[i].name,
         position: initialLocations[i].position,
         map: map,
         title: initialLocations[i].description,
-        info: infoWindowList[i]
+        info: orderedInfoList[i]
       }); 
 
       google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(this.name + "<br>" + this.title + "<br>" + this.info);
+          infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
           infowindow.open(map, this);
           map.panTo(this.position);
       });
