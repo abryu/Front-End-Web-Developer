@@ -4,11 +4,13 @@ html, body {
 	padding: 0;
 }
 
-#map {
-	height: 100%;
-}
-
 form {
     width:500px;
     margin:50px auto;
 }
+
+#map {
+	height: 100%;
+}
+
+
