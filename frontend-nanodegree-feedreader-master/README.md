@@ -54,7 +54,7 @@ When complete - all of your tests should pass.
 
 Just open the index.html in your browser.
 
-If you see the green bar in the page, it means successfully pass all tests.
+If you see the deep green bar or no failures in the page, it means successfully pass all tests.
 
 If you see the red bar, it means some bugs need fix.
 
