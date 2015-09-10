@@ -62,8 +62,6 @@ var ViewModel = function() {
   //Clear search bar.
   self.clearPlacesInputValue = function() {
     $("#placesInput").val('');
-    //self.userSelected(initialLocations[0]);
-    //google.maps.event.trigger(markersList[0], 'click');
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
   };
   //Iterating each places, push information windown to to infoWindowList.
