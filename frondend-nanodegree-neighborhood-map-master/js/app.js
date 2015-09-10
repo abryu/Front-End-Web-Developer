@@ -121,8 +121,18 @@ var ViewModel = function() {
         title: initialLocations[i].description,
         info: orderedInfoList[i]
       }); 
-
+      //Add action to each marker, including bounce and infomation window.
       google.maps.event.addListener(marker, 'click', function() {
+          //Add Bounce to each marker
+          this.setAnimation(google.maps.Animation.BOUNCE);
+          function stopAnimation(marker) {
+            setTimeout(function() {
+              marker.setAnimation(null);
+              console.log("it time out");
+            },2000);
+          }
+          stopAnimation(this);
+          //Set content to each infomation window.
           infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
           infowindow.open(map, this);
           map.panTo(this.position);
@@ -135,10 +145,7 @@ var ViewModel = function() {
         google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
     });
   }
-
   google.maps.event.addDomListener(window, "load", initMap);
-
 };
 
 ko.applyBindings(new ViewModel());
-
