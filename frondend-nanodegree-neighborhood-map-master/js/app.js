@@ -128,7 +128,6 @@ var ViewModel = function() {
           function stopAnimation(marker) {
             setTimeout(function() {
               marker.setAnimation(null);
-              console.log("it time out");
             },2000);
           }
           stopAnimation(this);
