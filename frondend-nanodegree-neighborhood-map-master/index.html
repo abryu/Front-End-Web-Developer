@@ -12,7 +12,7 @@
 
       <div class='col-md-2 searchBar'>
         <label for="placesInput">Places:</label>
-        <input id="placesInput" type="text" value="" list="availablePlaces" />
+        <input id="placesInput" type="text" value="" list="availablePlaces" data-bind="textInput: searchInput"/>
           <datalist id="availablePlaces" data-bind="foreach: initialLocations">
             <option data-bind="value: name"></option>
           </datalist>

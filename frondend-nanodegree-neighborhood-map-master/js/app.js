@@ -44,32 +44,39 @@ var ViewModel = function() {
   var self = this;
   //For observing user input.
   self.userSelected = ko.observable(" ");
+  //capture HTML textInput
+  self.searchInput = ko.observable("");
 
   //Get user selected place's index.
   self.updatedUserSelectedIndex = ko.computed(function() {
-        return self.userSelected().index;
+    return self.userSelected().index;
   });
 
   //Triggered by SUBMIT button.
   self.getPlacesInputValue = function() {
-    var newText = $("#placesInput").val();
+    var newText = self.searchInput();
     for(var i = 0; i < initialLocations.length; i++) {
       if(initialLocations[i].name === newText) {
         self.userSelected(initialLocations[i]);
+        google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
       }
     }
+    console.log(self.searchInput());
   };
   //Clear search bar.
   self.clearPlacesInputValue = function() {
     $("#placesInput").val('');
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
   };
+
   //Iterating each places, push information windown to to infoWindowList.
   for(var j = 0; j < initialLocations.length; j++) {
       var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[j].name + '&format=json&callback=wikiCallback';
       //Error handing.
       var wikiRequestTimeout = setTimeout(function() {
         infoWindowElement = "We are sorry for we cannot get wikipedia sources";
+        console.log("error");
+        infoWindowList.push(infoWindowElement);
       },8000);
 
       $.ajax({
@@ -88,7 +95,8 @@ var ViewModel = function() {
         }
       });    
   }
-  
+
+
   function initMap() {
     var infowindow = new google.maps.InfoWindow();
     //Sort each infoWindowList element, according to intialLocations order.
@@ -137,11 +145,12 @@ var ViewModel = function() {
 
       markersList.push(marker);
     }
-
+/*
     self.update = ko.computed(function() {
         google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
     });
   }
+*/
   google.maps.event.addDomListener(window, "load", initMap);
 };
 
