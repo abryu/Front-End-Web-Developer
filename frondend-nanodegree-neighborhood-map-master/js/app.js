@@ -44,12 +44,37 @@ var ViewModel = function() {
   var self = this;
   //For observing user input.
   self.userSelected = ko.observable(" ");
-  //capture HTML textInput
+  //Capture HTML textInput
   self.searchInput = ko.observable("");
-
   //Get user selected place's index.
   self.updatedUserSelectedIndex = ko.computed(function() {
     return self.userSelected().index;
+  });
+
+  //A function filter the markers
+  self.markersFilter = function() {
+    console.log("markers filter");
+    console.log(self.searchInput());
+    var textInputLength = self.searchInput().length;
+    for(var i = 0; i < initialLocations.length; i++) {
+      if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
+        google.maps.event.trigger(markersList[i], 'dblclick');
+      }
+    }
+  };
+
+  //Open all markers
+  self.openAllMarkers = function() {
+    console.log("open markers");
+    for(var k = 0; k < markersList.length; k++) {
+      google.maps.event.trigger(markersList[k], 'click');
+    }
+  };
+  //Update the actuall value of HTML textInput
+  self.updatedSerchInput = ko.computed(function () {  
+    if(self.searchInput().length != 0 ) {
+      self.markersFilter();  
+    }
   });
 
   //Triggered by SUBMIT button.
@@ -61,12 +86,13 @@ var ViewModel = function() {
         google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
       }
     }
-    console.log(self.searchInput());
   };
   //Clear search bar.
   self.clearPlacesInputValue = function() {
     $("#placesInput").val('');
+    self.openAllMarkers();
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
+    //location.reload();
   };
 
   //Iterating each places, push information windown to to infoWindowList.
@@ -75,7 +101,7 @@ var ViewModel = function() {
       //Error handing.
       var wikiRequestTimeout = setTimeout(function() {
         infoWindowElement = "We are sorry for we cannot get wikipedia sources";
-        console.log("error");
+        //console.log("error");
         infoWindowList.push(infoWindowElement);
       },8000);
 
@@ -96,10 +122,9 @@ var ViewModel = function() {
       });    
   }
 
-
   function initMap() {
     var infowindow = new google.maps.InfoWindow();
-    //Sort each infoWindowList element, according to intialLocations order.
+    //Sort each infoWindowList element, according to initialLocations order.
     for(var k = 0; k < infoWindowList.length; k++) {
       if (infoWindowList[k].indexOf('Ryerson University') > -1) {
         orderedInfoList[0]=infoWindowList[k];
@@ -143,15 +168,17 @@ var ViewModel = function() {
           map.panTo(this.position);
       });
 
+      //Add action to remove the marker
+      google.maps.event.addListener(marker, 'dblclick', function() {
+        this.setMap(null);
+        console.log("close the marker for " + this.name);
+      }); 
+
       markersList.push(marker);
     }
-/*
-    self.update = ko.computed(function() {
-        google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
-    });
   }
-*/
   google.maps.event.addDomListener(window, "load", initMap);
+
 };
 
 ko.applyBindings(new ViewModel());
