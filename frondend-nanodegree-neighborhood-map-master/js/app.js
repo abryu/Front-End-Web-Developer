@@ -53,27 +53,30 @@ var ViewModel = function() {
 
   //A function filter the markers
   self.markersFilter = function() {
-    console.log("markers filter");
-    console.log(self.searchInput());
     var textInputLength = self.searchInput().length;
     for(var i = 0; i < initialLocations.length; i++) {
       if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
-        google.maps.event.trigger(markersList[i], 'dblclick');
+        google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+      } else {     //If a user deletes a character
+        google.maps.event.trigger(markersList[i], 'visibleAMarker');
       }
     }
   };
 
-  //Open all markers
+  //A function open all markers
   self.openAllMarkers = function() {
     console.log("open markers");
     for(var k = 0; k < markersList.length; k++) {
-      google.maps.event.trigger(markersList[k], 'click');
+      google.maps.event.trigger(markersList[k], 'visibleAMarker');
     }
   };
-  //Update the actuall value of HTML textInput
+
+  //Track the latest value of HTML textInput
   self.updatedSerchInput = ko.computed(function () {  
     if(self.searchInput().length != 0 ) {
       self.markersFilter();  
+    } else {     //If no character in search bar, display all markers
+      self.openAllMarkers();
     }
   });
 
@@ -87,12 +90,12 @@ var ViewModel = function() {
       }
     }
   };
-  //Clear search bar.
+
+  //Triggered by CLEAR button.
   self.clearPlacesInputValue = function() {
     $("#placesInput").val('');
     self.openAllMarkers();
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
-    //location.reload();
   };
 
   //Iterating each places, push information windown to to infoWindowList.
@@ -169,16 +172,18 @@ var ViewModel = function() {
       });
 
       //Add action to remove the marker
-      google.maps.event.addListener(marker, 'dblclick', function() {
-        this.setMap(null);
-        console.log("close the marker for " + this.name);
+      google.maps.event.addListener(marker, 'invisibleAMarker', function() {
+        this.setVisible(false);
+      }); 
+      //Open the marker
+      google.maps.event.addListener(marker, 'visibleAMarker', function() {
+        this.setVisible(true);
       }); 
 
       markersList.push(marker);
     }
   }
   google.maps.event.addDomListener(window, "load", initMap);
-
 };
 
 ko.applyBindings(new ViewModel());
