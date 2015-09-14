@@ -56,7 +56,14 @@ var ViewModel = function() {
     var textInputLength = self.searchInput().length;
     for(var i = 0; i < initialLocations.length; i++) {
       if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
-        google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+        if(textInputLength > 1 && 
+          initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2)) {
+          console.log(initialLocations[i].name.toLowerCase().charAt(textInputLength-2) + self.searchInput().toLowerCase().charAt(textInputLength-2));
+          google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+        }
+        if(textInputLength == 1) {
+          google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+        }
       } else {     //If a user deletes a character
         google.maps.event.trigger(markersList[i], 'visibleAMarker');
       }
@@ -73,7 +80,7 @@ var ViewModel = function() {
 
   //Track the latest value of HTML textInput
   self.updatedSerchInput = ko.computed(function () {  
-    if(self.searchInput().length != 0 ) {
+    if(self.searchInput().length > 0 ) {
       self.markersFilter();  
     } else {     //If no character in search bar, display all markers
       self.openAllMarkers();
