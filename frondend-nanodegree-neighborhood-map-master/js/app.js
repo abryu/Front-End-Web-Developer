@@ -1,3 +1,4 @@
+"use strict";
 //A list for storing markers.
 var markersList = [];
 //A list for storing information windows.
@@ -40,6 +41,65 @@ var initialLocations = [
     }
 ];
 
+function initMap() {
+  var infowindow = new google.maps.InfoWindow();
+  //Sort each infoWindowList element, according to initialLocations order.
+  for(var k = 0; k < infoWindowList.length; k++) {
+    if (infoWindowList[k].indexOf('Ryerson University') > -1) {
+      orderedInfoList[0]=infoWindowList[k];
+    } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
+      orderedInfoList[1]=infoWindowList[k];
+    } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
+      orderedInfoList[2]=infoWindowList[k];
+    } else if (infoWindowList[k].indexOf('Toronto Symphony Orchestra') > -1) {
+      orderedInfoList[3]=infoWindowList[k];
+    } else {
+      orderedInfoList[4]=infoWindowList[k];
+    }
+  }
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: {lat: 43.653483, lng: -79.384094}
+  });
+
+  for(var i = 0; i < initialLocations.length; i++) {
+    var marker = new google.maps.Marker({
+      name : initialLocations[i].name,
+      position: initialLocations[i].position,
+      map: map,
+      title: initialLocations[i].description,
+      info: orderedInfoList[i]
+    }); 
+    //Add action to each marker, including bounce and infomation window.
+    google.maps.event.addListener(marker, 'click', function() {
+        //Add Bounce to each marker
+        this.setAnimation(google.maps.Animation.BOUNCE);
+        function stopAnimation(marker) {
+          setTimeout(function() {
+            marker.setAnimation(null);
+          },2000);
+        }
+        stopAnimation(this);
+        //Set content to each infomation window.
+        infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
+        infowindow.open(map, this);
+        map.panTo(this.position);
+    });
+
+    //Add action to remove the marker
+    google.maps.event.addListener(marker, 'invisibleAMarker', function() {
+      this.setVisible(false);
+    }); 
+    //Open the marker
+    google.maps.event.addListener(marker, 'visibleAMarker', function() {
+      this.setVisible(true);
+    }); 
+
+    markersList.push(marker);
+  }
+};
+
 var ViewModel = function() {
   var self = this;
   //For observing user input.
@@ -58,7 +118,6 @@ var ViewModel = function() {
       if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
         if(textInputLength > 1 && 
           initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2)) {
-          console.log(initialLocations[i].name.toLowerCase().charAt(textInputLength-2) + self.searchInput().toLowerCase().charAt(textInputLength-2));
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
         }
         if(textInputLength == 1) {
@@ -72,7 +131,6 @@ var ViewModel = function() {
 
   //A function open all markers
   self.openAllMarkers = function() {
-    console.log("open markers");
     for(var k = 0; k < markersList.length; k++) {
       google.maps.event.trigger(markersList[k], 'visibleAMarker');
     }
@@ -125,71 +183,15 @@ var ViewModel = function() {
             articleStr = articleList[i];
             var url = 'http://en.wikipedia.org/wiki/' + articleStr;
             infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-          };
+          }
           clearTimeout(wikiRequestTimeout);
           infoWindowList.push(infoWindowElement);
         }
       });    
   }
+/*
 
-  function initMap() {
-    var infowindow = new google.maps.InfoWindow();
-    //Sort each infoWindowList element, according to initialLocations order.
-    for(var k = 0; k < infoWindowList.length; k++) {
-      if (infoWindowList[k].indexOf('Ryerson University') > -1) {
-        orderedInfoList[0]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
-        orderedInfoList[1]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
-        orderedInfoList[2]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('Toronto Symphony Orchestra') > -1) {
-        orderedInfoList[3]=infoWindowList[k];
-      } else {
-        orderedInfoList[4]=infoWindowList[k];
-      }
-    }
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: {lat: 43.653483, lng: -79.384094}
-    });
-
-    for(var i = 0; i < initialLocations.length; i++) {
-      var marker = new google.maps.Marker({
-        name : initialLocations[i].name,
-        position: initialLocations[i].position,
-        map: map,
-        title: initialLocations[i].description,
-        info: orderedInfoList[i]
-      }); 
-      //Add action to each marker, including bounce and infomation window.
-      google.maps.event.addListener(marker, 'click', function() {
-          //Add Bounce to each marker
-          this.setAnimation(google.maps.Animation.BOUNCE);
-          function stopAnimation(marker) {
-            setTimeout(function() {
-              marker.setAnimation(null);
-            },2000);
-          }
-          stopAnimation(this);
-          //Set content to each infomation window.
-          infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
-          infowindow.open(map, this);
-          map.panTo(this.position);
-      });
-
-      //Add action to remove the marker
-      google.maps.event.addListener(marker, 'invisibleAMarker', function() {
-        this.setVisible(false);
-      }); 
-      //Open the marker
-      google.maps.event.addListener(marker, 'visibleAMarker', function() {
-        this.setVisible(true);
-      }); 
-
-      markersList.push(marker);
-    }
-  }
+*/
   google.maps.event.addDomListener(window, "load", initMap);
 };
 
