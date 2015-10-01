@@ -98,10 +98,12 @@ function initMap() {
 
     markersList.push(marker);
   }
-};
+}
 
 var ViewModel = function() {
   var self = this;
+  self.placesArray = ko.observableArray([]);
+  self.currentPlaces = ko.observable();
   //For observing user input.
   self.userSelected = ko.observable(" ");
   //Capture HTML textInput
@@ -128,7 +130,7 @@ var ViewModel = function() {
       }
     }
   };
-
+  
   //A function open all markers
   self.openAllMarkers = function() {
     for(var k = 0; k < markersList.length; k++) {
