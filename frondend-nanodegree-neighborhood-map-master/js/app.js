@@ -43,19 +43,22 @@ var initialLocations = [
 
 function initMap() {
   var infowindow = new google.maps.InfoWindow();
+
   //Sort each infoWindowList element, according to initialLocations order.
   for(var k = 0; k < infoWindowList.length; k++) {
-    if (infoWindowList[k].indexOf('Ryerson University') > -1) {
-      orderedInfoList[0]=infoWindowList[k];
-    } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
-      orderedInfoList[1]=infoWindowList[k];
-    } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
-      orderedInfoList[2]=infoWindowList[k];
-    } else if (infoWindowList[k].indexOf('Toronto Symphony Orchestra') > -1) {
-      orderedInfoList[3]=infoWindowList[k];
-    } else {
-      orderedInfoList[4]=infoWindowList[k];
-    }
+      if (infoWindowList[k].indexOf('Ryerson University') > -1) {
+        orderedInfoList[0]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
+        orderedInfoList[1]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
+        orderedInfoList[2]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('Toronto Symphony Orchestra') > -1) {
+        orderedInfoList[3]=infoWindowList[k];
+      } else if (infoWindowList[k].indexOf('Toronto Eaton Center') > -1) {
+        orderedInfoList[4]=infoWindowList[k];
+      } else {//If a error happens, it will push the pre-defined error text into the array
+        orderedInfoList[k]=infoWindowList[k];
+      }  
   }
 
   var map = new google.maps.Map(document.getElementById('map'), {
@@ -168,13 +171,6 @@ var ViewModel = function() {
   //Iterating each places, push information windown to to infoWindowList.
   for(var j = 0; j < initialLocations.length; j++) {
       var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[j].name + '&format=json&callback=wikiCallback';
-      //Error handing.
-      var wikiRequestTimeout = setTimeout(function() {
-        infoWindowElement = "We are sorry for we cannot get wikipedia sources";
-        //console.log("error");
-        infoWindowList.push(infoWindowElement);
-      },8000);
-
       $.ajax({
         url: wikiUrl,
         dataType: "jsonp",
@@ -186,14 +182,14 @@ var ViewModel = function() {
             var url = 'http://en.wikipedia.org/wiki/' + articleStr;
             infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
           }
-          clearTimeout(wikiRequestTimeout);
           infoWindowList.push(infoWindowElement);
         }
+      }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
+        infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
+        infoWindowList.push(infoWindowElement);
       });    
   }
-/*
 
-*/
   google.maps.event.addDomListener(window, "load", initMap);
 };
 
