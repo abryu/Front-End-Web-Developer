@@ -42,6 +42,7 @@ var initialLocations = [
 ];
 
 function initMap() {
+  "use strict";
   var infowindow = new google.maps.InfoWindow();
 
   //Sort each infoWindowList element, according to initialLocations order.
@@ -98,12 +99,17 @@ function initMap() {
     google.maps.event.addListener(marker, 'visibleAMarker', function() {
       this.setVisible(true);
     }); 
+    //Close unrealted info windows according to users search input.
+    google.maps.event.addListener(marker, 'closeUnrelatedWindows', function() {
+      infowindow.close();
+    }); 
 
     markersList.push(marker);
   }
 }
 
 var ViewModel = function() {
+  "use strict";
   var self = this;
   self.placesArray = ko.observableArray([]);
   self.currentPlaces = ko.observable();
@@ -124,9 +130,11 @@ var ViewModel = function() {
         if(textInputLength > 1 && 
           initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2)) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+          google.maps.event.trigger(markersList[i], 'closeUnrelatedWindows');
         }
         if(textInputLength == 1) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
+          google.maps.event.trigger(markersList[i], 'closeUnrelatedWindows');
         }
       } else {     //If a user deletes a character
         google.maps.event.trigger(markersList[i], 'visibleAMarker');
