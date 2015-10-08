@@ -12,7 +12,7 @@
   <body>
       <div class='col-md-10' id="map"></div>
 
-      <div class='col-md-2 searchBar'>
+      <div class='col-md-2'>
         <label for="placesInput">Places:</label>
         <input id="placesInput" type="text" value="" list="availablePlaces" data-bind="textInput: searchInput"/>
           <datalist id="availablePlaces" data-bind="foreach: initialLocations">
@@ -22,7 +22,7 @@
         <button type="button" data-bind="click: clearPlacesInputValue">Clear</button>  
       </div>
     
-    <script src="http://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+    <script async defer src="http://maps.googleapis.com/maps/api/js?v=3&callback=initialize"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

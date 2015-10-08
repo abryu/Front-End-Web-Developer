@@ -1,4 +1,3 @@
-"use strict";
 //A list for storing markers.
 var markersList = [];
 //A list for storing information windows.
@@ -62,16 +61,14 @@ function initMap() {
       }  
   }
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
-    center: {lat: 43.653483, lng: -79.384094}
-  });
 
   for(var i = 0; i < initialLocations.length; i++) {
     var marker = new google.maps.Marker({
       name : initialLocations[i].name,
       position: initialLocations[i].position,
-      map: map,
+      //CHANGED
+      setMap: map,
+      //map: map,
       title: initialLocations[i].description,
       info: orderedInfoList[i]
     }); 
@@ -106,6 +103,7 @@ function initMap() {
 
     markersList.push(marker);
   }
+
 }
 
 var ViewModel = function() {
@@ -199,6 +197,16 @@ var ViewModel = function() {
   }
 
   google.maps.event.addDomListener(window, "load", initMap);
+
 };
 
-ko.applyBindings(new ViewModel());
+//CHANGED
+function initialize() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 15,
+    center: {lat: 43.653483, lng: -79.384094}
+  });
+
+  ko.applyBindings(new ViewModel());
+}
+
