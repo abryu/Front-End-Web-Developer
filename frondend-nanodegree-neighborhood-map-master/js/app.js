@@ -1,11 +1,7 @@
 //A list for storing markers.
 var markersList = [];
-//A list for storing information windows.
-var infoWindowList = [];
 //A single element for information window.
 var infoWindowElement;
-//A list for information windows, but in order according to intial locations.
-var orderedInfoList = [];
 //Array for storing my interesting places basic information.
 var initialLocations = [
     {
@@ -40,70 +36,26 @@ var initialLocations = [
     }
 ];
 
-function initMap() {
+function getSelectedInfo(placeStr) {
   "use strict";
-  var infowindow = new google.maps.InfoWindow();
-
-  //Sort each infoWindowList element, according to initialLocations order.
-  for(var k = 0; k < infoWindowList.length; k++) {
-      if (infoWindowList[k].indexOf('Ryerson University') > -1) {
-        orderedInfoList[0]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('Toronto City Hall') > -1) {
-        orderedInfoList[1]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('University of Toronto') > -1) {
-        orderedInfoList[2]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('Toronto Symphony Orchestra') > -1) {
-        orderedInfoList[3]=infoWindowList[k];
-      } else if (infoWindowList[k].indexOf('Toronto Eaton Center') > -1) {
-        orderedInfoList[4]=infoWindowList[k];
-      } else {//If a error happens, it will push the pre-defined error text into the array
-        orderedInfoList[k]=infoWindowList[k];
-      }  
-  }
-
-
-  for(var i = 0; i < initialLocations.length; i++) {
-    var marker = new google.maps.Marker({
-      name : initialLocations[i].name,
-      position: initialLocations[i].position,
-      //CHANGED
-      setMap: map,
-      //map: map,
-      title: initialLocations[i].description,
-      info: orderedInfoList[i]
-    }); 
-    //Add action to each marker, including bounce and infomation window.
-    google.maps.event.addListener(marker, 'click', function() {
-        //Add Bounce to each marker
-        this.setAnimation(google.maps.Animation.BOUNCE);
-        function stopAnimation(marker) {
-          setTimeout(function() {
-            marker.setAnimation(null);
-          },2000);
-        }
-        stopAnimation(this);
-        //Set content to each infomation window.
-        infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
-        infowindow.open(map, this);
-        map.panTo(this.position);
-    });
-
-    //Add action to remove the marker
-    google.maps.event.addListener(marker, 'invisibleAMarker', function() {
-      this.setVisible(false);
-    }); 
-    //Open the marker
-    google.maps.event.addListener(marker, 'visibleAMarker', function() {
-      this.setVisible(true);
-    }); 
-    //Close unrealted info windows according to users search input.
-    google.maps.event.addListener(marker, 'closeUnrelatedWindows', function() {
-      infowindow.close();
-    }); 
-
-    markersList.push(marker);
-  }
-
+  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + placeStr + '&format=json&callback=wikiCallback'; 
+  $.ajax({
+    url: wikiUrl,
+    dataType: "jsonp",
+    success: function(response) {
+      var articleList = response[1];
+      var articleStr = "";
+      for(var i = 0; i < 1; i++) {
+        articleStr = articleList[i];
+        var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+        infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
+      }
+      $(".infoDisplay").append(infoWindowElement);
+    }
+  }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
+    infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
+    $(".infoDisplay").append(infoWindowElement);
+  }); 
 }
 
 var ViewModel = function() {
@@ -120,6 +72,58 @@ var ViewModel = function() {
     return self.userSelected().index;
   });
 
+  function initMap() {
+    var infowindow = new google.maps.InfoWindow();
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: {lat: 43.653483, lng: -79.384094}
+    });
+
+    for(var i = 0; i < initialLocations.length; i++) { 
+      //setTimeout(function(){ alert("Hello"); }, 3000);
+      var marker = new google.maps.Marker({
+        name : initialLocations[i].name,
+        position: initialLocations[i].position,
+        map: map,
+        title: initialLocations[i].description,
+        //info: getInfoList(initialLocations[i].name)
+      }); 
+      //Add action to each marker, including bounce and infomation window.
+      google.maps.event.addListener(marker, 'click', function() {
+          //Get user selected place's information
+          getSelectedInfo(this.name);     
+          //Add Bounce to each marker
+          this.setAnimation(google.maps.Animation.BOUNCE);
+          function stopAnimation(marker) {
+            setTimeout(function() {
+              marker.setAnimation(null);
+            },2000);
+          }
+          stopAnimation(this);
+          infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>");
+          infowindow.open(map, this);
+          map.panTo(this.position);
+          $(".infoDisplay").text(" ");
+      });
+
+      //Add action to remove the marker
+      google.maps.event.addListener(marker, 'invisibleAMarker', function() {
+        this.setVisible(false);
+      }); 
+      //Open the marker
+      google.maps.event.addListener(marker, 'visibleAMarker', function() {
+        this.setVisible(true);
+      }); 
+      //Close unrealted info windows according to users search input.
+      google.maps.event.addListener(marker, 'closeUnrelatedWindows', function() {
+        infowindow.close();
+      }); 
+
+      markersList.push(marker);
+    }
+  }
+  
   //A function filter the markers
   self.markersFilter = function() {
     var textInputLength = self.searchInput().length;
@@ -174,39 +178,10 @@ var ViewModel = function() {
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
   };
 
-  //Iterating each places, push information windown to to infoWindowList.
-  for(var j = 0; j < initialLocations.length; j++) {
-      var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[j].name + '&format=json&callback=wikiCallback';
-      $.ajax({
-        url: wikiUrl,
-        dataType: "jsonp",
-        success: function(response) {
-          var articleList = response[1];
-          var articleStr = "";
-          for(var i = 0; i < 1; i++) {
-            articleStr = articleList[i];
-            var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-            infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-          }
-          infoWindowList.push(infoWindowElement);
-        }
-      }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
-        infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
-        infoWindowList.push(infoWindowElement);
-      });    
-  }
-
   google.maps.event.addDomListener(window, "load", initMap);
 
 };
 
-//CHANGED
 function initialize() {
-    var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
-    center: {lat: 43.653483, lng: -79.384094}
-  });
-
   ko.applyBindings(new ViewModel());
 }
-
