@@ -61,8 +61,6 @@ function getSelectedInfo(placeStr) {
 var ViewModel = function() {
   "use strict";
   var self = this;
-  self.placesArray = ko.observableArray([]);
-  self.currentPlaces = ko.observable();
   //For observing user input.
   self.userSelected = ko.observable(" ");
   //Capture HTML textInput
@@ -123,27 +121,31 @@ var ViewModel = function() {
       markersList.push(marker);
     }
   }
-  
+
   //A function filter the markers
   self.markersFilter = function() {
     var textInputLength = self.searchInput().length;
     for(var i = 0; i < initialLocations.length; i++) {
-      if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
-        if(textInputLength > 1 && 
-          initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2)) {
+      if(textInputLength == 1){
+        if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
           google.maps.event.trigger(markersList[i], 'closeUnrelatedWindows');
+        } else {
+          google.maps.event.trigger(markersList[i], 'visibleAMarker');
         }
-        if(textInputLength == 1) {
+      }
+      if(textInputLength > 1){
+        if(initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2) ||
+          initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
           google.maps.event.trigger(markersList[i], 'closeUnrelatedWindows');
+        } else {
+          google.maps.event.trigger(markersList[i], 'visibleAMarker');
         }
-      } else {     //If a user deletes a character
-        google.maps.event.trigger(markersList[i], 'visibleAMarker');
       }
     }
   };
-  
+
   //A function open all markers
   self.openAllMarkers = function() {
     for(var k = 0; k < markersList.length; k++) {
