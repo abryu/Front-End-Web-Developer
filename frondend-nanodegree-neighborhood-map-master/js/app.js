@@ -35,32 +35,8 @@ var initialLocations = [
       index : 4
     }
 ];
-/*
-function getSelectedInfo(placeStr) {
-  "use strict";
-  var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + placeStr + '&format=json&callback=wikiCallback'; 
-  $.ajax({
-    url: wikiUrl,
-    dataType: "jsonp",
-    success: function(response) {
-      var articleList = response[1];
-      var articleStr = "";
-      for(var i = 0; i < 1; i++) {
-        articleStr = articleList[i];
-        var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-        infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-      }
-      console.log("AJAX" + infoWindowElement);
-      $(".infoDisplay").text(infoWindowElement);
-    }
-  }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
-    infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
-    console.log("AJAX" + infoWindowElement);
-    $(".infoDisplay").text(infoWindowElement);
-  }); 
-}
-*/
 
+//Initialize AJAX at the beginning, then respectively append each AJAX to a HTML List, infoWindow capture HTML List to display Wiki
 function getAJAXResult() {
   for(i = 0; i < initialLocations.length; i++) {
     var count = 0;
@@ -90,12 +66,9 @@ function getAJAXResult() {
       }
     }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
       infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
-      console.log("AJAX" + infoWindowElement);
-      $("#0").text(infoWindowElement);
-      $("#1").text(infoWindowElement);
-      $("#2").text(infoWindowElement);
-      $("#3").text(infoWindowElement);
-      $("#4").text(infoWindowElement);
+      for(var t = 0; t < initialLocations.length; t++) {
+        $("#" + t).text(infoWindowElement);
+      }
     }); 
     
   }
@@ -171,7 +144,7 @@ var ViewModel = function() {
   self.markersFilter = function() {
     var textInputLength = self.searchInput().length;
     for(var i = 0; i < initialLocations.length; i++) {
-      if(textInputLength == 1){
+      if(textInputLength == 1){ //When user only type in one character, compare this character to pre-defined places.
         if(initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
           google.maps.event.trigger(markersList[i], 'closeUnrelatedWindows');
@@ -179,7 +152,7 @@ var ViewModel = function() {
           google.maps.event.trigger(markersList[i], 'visibleAMarker');
         }
       }
-      if(textInputLength > 1){
+      if(textInputLength > 1){ //When user only type in more than one character, compare latest one and two character to pre-defined places.
         if(initialLocations[i].name.toLowerCase().charAt(textInputLength-2) != self.searchInput().toLowerCase().charAt(textInputLength-2) ||
           initialLocations[i].name.toLowerCase().charAt(textInputLength-1) != self.searchInput().toLowerCase().charAt(textInputLength-1)) {
           google.maps.event.trigger(markersList[i], 'invisibleAMarker');
