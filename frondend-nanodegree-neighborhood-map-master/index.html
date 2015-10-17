@@ -20,7 +20,13 @@
           </datalist>
         <input type="submit" data-bind="click: getPlacesInputValue">    
         <button type="button" data-bind="click: clearPlacesInputValue">Clear</button>  
-        <p class='infoDisplay'></p>
+        <ul hidden class="infoL">
+          <li id="0"></li>
+          <li id="1"></li>
+          <li id="2"></li>
+          <li id="3"></li>
+          <li id="4"></li>
+        </ul>
       </div>
 
     <script async defer src="http://maps.googleapis.com/maps/api/js?v=3&callback=initialize"></script>
