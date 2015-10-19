@@ -16,6 +16,6 @@ form {
 
 @media screen and (max-width: 992px) {
   #map {
-    height: calc(100vh - 15%);  
+    height: calc(100vh - 5%);  
   }
 }

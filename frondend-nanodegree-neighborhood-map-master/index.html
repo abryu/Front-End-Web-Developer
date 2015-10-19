@@ -4,30 +4,29 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Udacity-Front-End</title>
-    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src='js/knockout-3.2.0.js'></script> 
   </head>
   <body>
-      <div class='col-md-10' id="map"></div>
-
+      
       <div class='col-md-2'>
         <label for="placesInput">Places:</label>
         <input id="placesInput" type="text" value="" list="availablePlaces" data-bind="textInput: searchInput"/>
           <datalist id="availablePlaces" data-bind="foreach: initialLocations">
             <option data-bind="value: name"></option>
           </datalist>
-        <input type="submit" data-bind="click: getPlacesInputValue">    
         <button type="button" data-bind="click: clearPlacesInputValue">Clear</button>  
-        <ul hidden class="infoL">
-          <li id="0"></li>
-          <li id="1"></li>
-          <li id="2"></li>
-          <li id="3"></li>
-          <li id="4"></li>
+        <ul hidden>
+          <li data-bind="text: infoWindowContent_0"></li>
+          <li data-bind="text: infoWindowContent_1"></li>
+          <li data-bind="text: infoWindowContent_2"></li>
+          <li data-bind="text: infoWindowContent_3"></li>
+          <li data-bind="text: infoWindowContent_4"></li>
         </ul>
       </div>
+      <div class='col-md-10' id="map"></div>
       
     <script async defer src="http://maps.googleapis.com/maps/api/js?v=3&callback=initialize"></script>
     <script src="js/app.js"></script>

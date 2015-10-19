@@ -36,44 +36,6 @@ var initialLocations = [
     }
 ];
 
-//Initialize AJAX at the beginning, then respectively append each AJAX to a HTML List, infoWindow capture HTML List to display Wiki
-function getAJAXResult() {
-  for(i = 0; i < initialLocations.length; i++) {
-    var count = 0;
-    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[i].name + '&format=json&callback=wikiCallback'; 
-    $.ajax({
-      url: wikiUrl,
-      dataType: "jsonp",
-      success: function(response) {
-        var articleList = response[1];
-        var articleStr = "";
-        for(var i = 0; i < 1; i++) {
-          articleStr = articleList[i];
-          var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-          infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-        }
-        if(infoWindowElement.indexOf("Ryerson University") > -1) {
-          $("#0").text(infoWindowElement);
-        } else if(infoWindowElement.indexOf("Toronto City Hall") > -1) {
-          $("#1").text(infoWindowElement);
-        } else if(infoWindowElement.indexOf("University of Toronto") > -1) {
-          $("#2").text(infoWindowElement);
-        } else if(infoWindowElement.indexOf("Toronto Symphony Orchestra") > -1) {
-          $("#3").text(infoWindowElement);
-        } else {
-          $("#4").text(infoWindowElement);    
-        }        
-      }
-    }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
-      infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
-      for(var t = 0; t < initialLocations.length; t++) {
-        $("#" + t).text(infoWindowElement);
-      }
-    }); 
-    
-  }
-}
-
 var ViewModel = function() {
   "use strict";
   var self = this;
@@ -83,8 +45,71 @@ var ViewModel = function() {
   self.searchInput = ko.observable("");
   //Get user selected place's index.
   self.updatedUserSelectedIndex = ko.computed(function() {
-    return self.userSelected().index;
+      return self.userSelected().index;
   });
+  
+  //ko obsearvables that used for setting and getting list elements to display wiki links
+  self.infoWindowContent_0 = ko.observable("");
+  self.infoWindowContent_1 = ko.observable("");
+  self.infoWindowContent_2 = ko.observable("");
+  self.infoWindowContent_3 = ko.observable("");
+  self.infoWindowContent_4 = ko.observable("");
+
+  //a method that allows markers' infoWindown Wiki can access ko.observable
+  self.accessObservable = function(index) {
+    if(index == 0) {
+      return self.infoWindowContent_0();
+    } else if (index == 1) {
+      return self.infoWindowContent_1();
+    } else if (index == 2) {
+      return self.infoWindowContent_2();
+    } else if (index == 3) {
+      return self.infoWindowContent_3();
+    } else {
+      return self.infoWindowContent_4();
+    }
+  }
+
+  //Initialize AJAX at the beginning, then respectively append each AJAX to a HTML List, infoWindow capture HTML List to display Wiki
+  function getAJAXResult() {
+    for(var i = 0; i < initialLocations.length; i++) {
+      var count = 0;
+      var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[i].name + '&format=json&callback=wikiCallback'; 
+      $.ajax({
+        url: wikiUrl,
+        dataType: "jsonp",
+        success: function(response) {
+          var articleList = response[1];
+          var articleStr = "";
+          for(var i = 0; i < 1; i++) {
+            articleStr = articleList[i];
+            var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+            infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
+          }
+          if(infoWindowElement.indexOf("Ryerson University") > -1) {
+            self.infoWindowContent_0(infoWindowElement);
+          } else if(infoWindowElement.indexOf("Toronto City Hall") > -1) {
+            self.infoWindowContent_1(infoWindowElement);
+          } else if(infoWindowElement.indexOf("University of Toronto") > -1) {
+            self.infoWindowContent_2(infoWindowElement);
+          } else if(infoWindowElement.indexOf("Toronto Symphony Orchestra") > -1) {
+            self.infoWindowContent_3(infoWindowElement);
+          } else {
+            self.infoWindowContent_4(infoWindowElement); 
+          }        
+        }
+      }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
+        infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
+        self.infoWindowContent_0.push(infoWindowElement);
+        self.infoWindowContent_1.push(infoWindowElement);
+        self.infoWindowContent_2.push(infoWindowElement);
+        self.infoWindowContent_3.push(infoWindowElement);
+        self.infoWindowContent_4.push(infoWindowElement);
+      }); 
+    }
+  }
+
+  getAJAXResult();
 
   function initMap() {
     var infowindow = new google.maps.InfoWindow();
@@ -95,19 +120,17 @@ var ViewModel = function() {
     });
 
     for(var i = 0; i < initialLocations.length; i++) { 
-      //setTimeout(function(){ alert("Hello"); }, 3000);
+      self.accessObservable();
       var marker = new google.maps.Marker({
         name : initialLocations[i].name,
         position: initialLocations[i].position,
         map: map,
         title: initialLocations[i].description,
-        //info: $("\'#" + i + "\'").text()
-        info: $("#" + i).text()
+        info: self.accessObservable(i)
       }); 
       //Add action to each marker, including bounce and infomation window.
       google.maps.event.addListener(marker, 'click', function() {
           //Get user selected place's information
-          //getSelectedInfo(this.name);     
           //Add Bounce to each marker
           this.setAnimation(google.maps.Animation.BOUNCE);
           function stopAnimation(marker) {
@@ -119,8 +142,6 @@ var ViewModel = function() {
           infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
           infowindow.open(map, this);
           map.panTo(this.position);
-          console.log($(".infoDisplay").text());
-          $(".infoDisplay").text(" ");
       });
 
       //Add action to remove the marker
@@ -163,6 +184,14 @@ var ViewModel = function() {
       }
     }
   };
+  //check users' input and to see whether there is a place name match the input. If matched, then trigger the place marker.
+  self.checkAndDisplaySelectedMarker = function() {
+    for(var g = 0; g < initialLocations.length; g++) {
+      if(initialLocations[g].name.toLowerCase() === self.searchInput().toLowerCase()) {
+        google.maps.event.trigger(markersList[g], 'click');
+      }
+    }
+  }
 
   //A function open all markers
   self.openAllMarkers = function() {
@@ -173,6 +202,9 @@ var ViewModel = function() {
 
   //Track the latest value of HTML textInput
   self.updatedSerchInput = ko.computed(function () {  
+    if(self.searchInput().length >= 7 && self.searchInput().length <= 30) {
+      self.checkAndDisplaySelectedMarker();
+    }
     if(self.searchInput().length > 0 ) {
       self.markersFilter();  
     } else {     //If no character in search bar, display all markers
@@ -180,29 +212,15 @@ var ViewModel = function() {
     }
   });
 
-  //Triggered by SUBMIT button.
-  self.getPlacesInputValue = function() {
-    var newText = self.searchInput();
-    for(var i = 0; i < initialLocations.length; i++) {
-      if(initialLocations[i].name === newText) {
-        self.userSelected(initialLocations[i]);
-        google.maps.event.trigger(markersList[self.updatedUserSelectedIndex()], 'click');
-      }
-    }
-  };
-
-  //Triggered by CLEAR button.
+  //Triggered by CLEAR button
   self.clearPlacesInputValue = function() {
-    $("#placesInput").val('');
+    self.searchInput("");
     self.openAllMarkers();
     google.maps.event.trigger(map, function() {map.panTo({lat: 43.653483, lng: -79.384094});});
   };
-
   google.maps.event.addDomListener(window, "load", initMap);
-
 };
 
 function initialize() {
-  getAJAXResult();
   ko.applyBindings(new ViewModel());  
 }
