@@ -105,7 +105,7 @@ var ViewModel = function() {
     self.arraySorting();
     var infowindow = new google.maps.InfoWindow();
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
+      zoom: 14,
       center: {lat: 43.653483, lng: -79.384094}
     });
 
@@ -129,8 +129,6 @@ var ViewModel = function() {
           }
           stopAnimation(this);
           infowindow.setContent("<br>" + this.name + "<br> <br> <li>" + this.title + "</li> <br>" + this.info);
-          console.log('click' + map);
-          console.log('click' + this);
           infowindow.open(map, this);
           map.panTo(this.position);
       });
@@ -146,13 +144,6 @@ var ViewModel = function() {
       //Close unrealted info windows according to users search input.
       google.maps.event.addListener(marker, 'closeUnrelatedWindows', function() {
         infowindow.close();
-      }); 
-
-      google.maps.event.addListener(marker, 'opentTheInfoWindow', function() {
-        console.log('opentTheInfoWindow' + map);
-        console.log('opentTheInfoWindow' + marker);
-        infowindow.close(marker);
-        infowindow.open(map, marker);
       }); 
 
       markersList.push(marker);
@@ -187,7 +178,14 @@ var ViewModel = function() {
     for(var g = 0; g < initialLocations.length; g++) {
       if(initialLocations[g].name.toLowerCase() === self.searchInput().toLowerCase()) {
         google.maps.event.trigger(markersList[g], 'click');
-        google.maps.event.trigger(markersList[g], 'opentTheInfoWindow');
+        markersList[g].infowindow.open();
+        for(var h = 0; h <initialLocations.length; h++) {///////////////////////////
+          if(h != g) {
+            console.log(h);
+            google.maps.event.trigger(markersList[h], 'invisibleAMarker');
+            google.maps.event.trigger(markersList[h], 'closeUnrelatedWindows');
+          }
+        }
       }
     }
   };
