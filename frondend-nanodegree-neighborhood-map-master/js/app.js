@@ -39,6 +39,10 @@ var initialLocations = [
 var ViewModel = function() {
   "use strict";
   var self = this;
+  //observableArray for storing infowindownElement (AJAX)
+  self.infoWindowArray = ko.observableArray();
+  //A sorted array for storing  infowindownElement  (AJAX)
+  self.sortedInfoWindowArray = ko.observableArray();
   //For observing user input.
   self.userSelected = ko.observable(" ");
   //Capture HTML textInput
@@ -47,86 +51,71 @@ var ViewModel = function() {
   self.updatedUserSelectedIndex = ko.computed(function() {
       return self.userSelected().index;
   });
-  
-  //ko obsearvables that used for setting and getting list elements to display wiki links
-  self.infoWindowContent_0 = ko.observable("");
-  self.infoWindowContent_1 = ko.observable("");
-  self.infoWindowContent_2 = ko.observable("");
-  self.infoWindowContent_3 = ko.observable("");
-  self.infoWindowContent_4 = ko.observable("");
 
-  //a method that allows markers' infoWindown Wiki can access ko.observable
-  self.accessObservable = function(index) {
-    if(index == 0) {
-      return self.infoWindowContent_0();
-    } else if (index == 1) {
-      return self.infoWindowContent_1();
-    } else if (index == 2) {
-      return self.infoWindowContent_2();
-    } else if (index == 3) {
-      return self.infoWindowContent_3();
-    } else {
-      return self.infoWindowContent_4();
+  //Because AJAX callback arrive at different time and order, so I created a function to sort the array which stores infoWindowElement.
+  self.arraySorting = function() {
+    //Create an empty array for storing sorted infowindowelement
+    for(var a = 0; a < self.infoWindowArray().length; a++) {
+      self.sortedInfoWindowArray().push("empty value");
     }
-  }
+
+    for(var s = 0; s < self.infoWindowArray().length; s++) {
+      if(self.infoWindowArray()[s].indexOf("Ryerson University") != -1) {
+        self.sortedInfoWindowArray().splice(0,1,self.infoWindowArray()[s]);
+      } else if(self.infoWindowArray()[s].indexOf("Toronto City Hall") != -1) {
+        self.sortedInfoWindowArray().splice(1,1,self.infoWindowArray()[s]);
+      } else if(self.infoWindowArray()[s].indexOf("University of Toronto") != -1) {
+        self.sortedInfoWindowArray().splice(2,1,self.infoWindowArray()[s]);
+      } else if(self.infoWindowArray()[s].indexOf("Toronto Symphony Orchestra") != -1) {
+        self.sortedInfoWindowArray().splice(3,1,self.infoWindowArray()[s]);
+      } else if(self.infoWindowArray()[s].indexOf("Toronto Eaton Center") != -1){
+        self.sortedInfoWindowArray().splice(4,1,self.infoWindowArray()[s]);
+      } else { // If there is a AJAX error, push the error infoWindow to the first index of sorted array.
+        self.sortedInfoWindowArray().unshift(self.infoWindowArray()[s]);
+      }
+    }
+  };
 
   //Initialize AJAX at the beginning, then respectively append each AJAX to a HTML List, infoWindow capture HTML List to display Wiki
   function getAJAXResult() {
     for(var i = 0; i < initialLocations.length; i++) {
-      var count = 0;
-      var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[i].name + '&format=json&callback=wikiCallback'; 
+      var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + initialLocations[i].name + '&format=json&k=wikiCallback'; 
       $.ajax({
         url: wikiUrl,
         dataType: "jsonp",
         success: function(response) {
           var articleList = response[1];
           var articleStr = "";
-          for(var i = 0; i < 1; i++) {
-            articleStr = articleList[i];
-            var url = 'http://en.wikipedia.org/wiki/' + articleStr;
-            infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
-          }
-          if(infoWindowElement.indexOf("Ryerson University") > -1) {
-            self.infoWindowContent_0(infoWindowElement);
-          } else if(infoWindowElement.indexOf("Toronto City Hall") > -1) {
-            self.infoWindowContent_1(infoWindowElement);
-          } else if(infoWindowElement.indexOf("University of Toronto") > -1) {
-            self.infoWindowContent_2(infoWindowElement);
-          } else if(infoWindowElement.indexOf("Toronto Symphony Orchestra") > -1) {
-            self.infoWindowContent_3(infoWindowElement);
-          } else {
-            self.infoWindowContent_4(infoWindowElement); 
-          }        
+          articleStr = articleList[0];
+          var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+          infoWindowElement = '<li><a href="' + url + '" target="_blank">' + articleStr + '</a></li>';
+          self.infoWindowArray.push(infoWindowElement);     
         }
       }).error(function(e) { //Error Handling. If a error rise, it will push a pre-defined text into the array.
         infoWindowElement = '<li>' + "Sorry, we cannot get the Wiki source now." + '</li>';
-        self.infoWindowContent_0.push(infoWindowElement);
-        self.infoWindowContent_1.push(infoWindowElement);
-        self.infoWindowContent_2.push(infoWindowElement);
-        self.infoWindowContent_3.push(infoWindowElement);
-        self.infoWindowContent_4.push(infoWindowElement);
+        self.infoWindowArray.push(infoWindowElement);  
       }); 
     }
   }
 
   getAJAXResult();
 
+// Maps api asynchronous load code here.
   function initMap() {
+    self.arraySorting();
     var infowindow = new google.maps.InfoWindow();
-
     var map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
       center: {lat: 43.653483, lng: -79.384094}
     });
 
     for(var i = 0; i < initialLocations.length; i++) { 
-      self.accessObservable();
       var marker = new google.maps.Marker({
         name : initialLocations[i].name,
         position: initialLocations[i].position,
         map: map,
         title: initialLocations[i].description,
-        info: self.accessObservable(i)
+        info: self.sortedInfoWindowArray()[i]
       }); 
       //Add action to each marker, including bounce and infomation window.
       google.maps.event.addListener(marker, 'click', function() {
@@ -191,7 +180,7 @@ var ViewModel = function() {
         google.maps.event.trigger(markersList[g], 'click');
       }
     }
-  }
+  };
 
   //A function open all markers
   self.openAllMarkers = function() {
