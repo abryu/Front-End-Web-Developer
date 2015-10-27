@@ -1,0 +1,106 @@
+@import url(http://weloveiconfonts.com/api/?family=zocial);
+/* zocial */
+[class*="zocial-"]:before {
+  font-family: "zocial", sans-serif;
+}
+
+hr {
+  border: 2px solid #a0a0a0;
+}
+
+h6 {
+  margin-bottom: 1px;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.header__menu,
+.nav__item {
+  display: none;
+}
+
+.container {
+  flex-wrap: wrap;
+}
+
+.featuredWork {
+  color: #bcbbbb;
+  font: 400 2em "Roboto", sans-serif;
+}
+
+.featuredWorkTitle {
+  color: #747704;
+}
+
+.img-p {
+  margin-top: 20px;
+}
+
+.text-name {
+  margin-top: 50px;
+  font: 100 3em "Roboto", sans-serif;
+}
+
+.text-position {
+  font: 500 2em "Roboto", sans-serif;
+}
+
+@media screen and (max-width: 549px) {
+
+  .img-p {
+    max-width: 30%;
+  }
+
+  .container {
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .nav {
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    position: absolute;
+    /* This trasform moves the drawer off canvas. */
+    -webkit-transform: translate(-9999px, 0);
+    transform: translate(-9999px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+  }
+
+  .nav.open {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+
+  .nav__item {
+    display: list-item;
+    border-bottom: 1px solid #e0e0e0;
+    width: 100%;
+    text-align: left;
+  }
+
+  .header__menu {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+  }
+
+  .header__menu svg {
+    width: 32px;
+    color: #000;
+  }
+}

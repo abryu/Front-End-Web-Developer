@@ -1,0 +1,21 @@
+html, 
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+form {
+    width: 500px;
+    margin: 50px auto;
+}
+
+#map {
+	height: 100%;
+}
+
+@media screen and (max-width: 992px) {
+  #map {
+    height: calc(100vh - 5%);  
+  }
+}
